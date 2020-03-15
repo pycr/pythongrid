@@ -15,7 +15,7 @@ numpy==1.13.3
 protobuf==3.4.0
 pyasn1==0.3.7
 python-dateutil==2.6.1
-PyYAML==3.12
+PyYAML==5.1
 rsa==3.4.2
 s3transfer==0.1.11
 six==1.11.0
