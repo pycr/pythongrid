@@ -43,12 +43,47 @@ With a new virtual environment created and activated, finally let's install Flas
 
     pip install flask
 
-Then install PyMySQL module
+
+pythonGrid chose the pure Python MySQL client [PyMySQL](https://github.com/PyMySQL/PyMySQL) to connect to MySQL database.
 
     pip install pymysql
-
 
 Finally, run Flask
 
     flask run
+
+## Quick Start
+
+A couple quick start options are available:
+
+* [Download the latest release](https://github.com/pycr/pythongrid/archive/master.zip)
+* Clone the repo: git clone https://github.com/pycr/pythongrid.git
+
+## Files included
+
+Within the download you will see something like this:
+
+    ├── LICENSE
+    ├── README.md
+    ├── app
+    │   ├── __init__.py
+    │   ├── data.py
+    │   ├── grid.py
+    │   ├── routes.py
+    │   ├── static
+    │   └── templates
+    │       ├── 404.html
+    │       ├── base.html
+    │       ├── grid.html
+    │       └── index.html
+    ├── sample
+    │   ├── sampledb.sql
+    ├── config.py
+    ├── index.py
+    └── requirements.txt
+
+
+## Creating the Database
+
+Before moving forward, [install MySQL](https://dev.mysql.com/doc/mysql-getting-started/en/#mysql-getting-started-installing) or MariaDB database on your local development environment or in [Docker](https://hub.docker.com/_/mysql).
 
