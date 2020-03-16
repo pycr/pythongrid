@@ -111,7 +111,7 @@ Find file `config.py`, and set the database connection properties according to y
 
 Flask uses *view functions* to handle for the application routes. View functions are mapped to one or more route URLs so that Flask knows what logic to execute when a client requests a given URL such as **"https://example.com/grid"**.
 
-We have two view functions that needs initialization.
+We have two view functions that need initialization.
 
 ### index()
 
