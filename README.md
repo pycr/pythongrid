@@ -38,6 +38,14 @@ Within the download you will see something like this:
     ├── index.py
     └── requirements.txt
 
+pythonGrid current has two main files in `grid.py` and `data.py` in **app** folder.
+
+* `grid.py` is the main Python class that is responsible for creating the datagrid table. It relies on [`jqGrid`](https://free-jqgrid.github.io/getting-started/index.html), a popular jQuery datagrid plugin, to render grids in the browser. 
+
+* `data.py` is a Python class that returns the data via AJAX to populate the grid from a database.
+
+* `static` contains all of the client side Javascript and CSS files used for rendering.
+
 ## Creating the Database
 
 Before moving forward, [install MySQL](https://dev.mysql.com/doc/mysql-getting-started/en/#mysql-getting-started-installing) or MariaDB database on your local development environment or in [Docker](https://hub.docker.com/_/mysql).
@@ -91,13 +99,31 @@ pythonGrid chose the pure Python MySQL client [PyMySQL](https://github.com/PyMyS
 
 ## Configuration
 
-Find file `config.py`, and set the database connection properties according to your environment.
+Find file `config.py`, and set the database connection properties according to your environment. You can use socket to connect to your database. 
 
     PYTHONGRID_DB_HOSTNAME = ''
     PYTHONGRID_DB_NAME = 'sampledb'
     PYTHONGRID_DB_USERNAME = 'root'
     PYTHONGRID_DB_PASSWORD = 'root'
-    PYTHONGRID_DB_SOCKET = '/Applications/MAMP/tmp/mysql/mysql.sock'
+    PYTHONGRID_DB_SOCKET = '/mysql/mysql.sock'
+
+## Initialize Grid
+
+Flask uses *view functions* to handle for the application routes. View functions are mapped to one or more route URLs so that Flask knows what logic to execute when a client requests a given URL such as **"https://example.com/grid"**.
+
+The file `routes.py` contains our `def index()` view functions associate with URL `/` and `/grid`. This means that when a web browser requests either of these two URLs, Flask is going to invoke this function and pass the return value of it back to the browser as a response.
+
+Inside the function, it creates a new instance of the PythonGrid class and assigns this object to the local variable `grid`.
+
+    grid = PythonGrid('SELECT * FROM orders', 'orderNumber', 'orders')
+
+The PythonGrid initializer requires three parameters:
+
+1. A simple SELECT SQL statement
+2. The database table primary key
+3. The database table name
+
+Note `orders` is a table from sample database `sampledb.sql`
 
 Lastly, run Flask
 
