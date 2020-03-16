@@ -127,7 +127,7 @@ The PythonGrid initializer requires three parameters:
 2. The database table primary key
 3. The database table name
 
-The view function returns the rendered template from `grid.html` template. It passes grid object. 
+The view function returns the rendered template from `grid.html` template. It passes the grid object.
 
     return render_template('grid.html', title='GRID', grid=grid)
 
@@ -135,7 +135,7 @@ The view function returns the rendered template from `grid.html` template. It pa
 
 In the next view function `data()`, we create a new instance for `PythonGridDbData` class that is responsible for retrieve data from the database.
 
-It has requires only one parameter should be the same SQL SELECT statement used for PythonGrid.
+It has requires only one parameter, which should be the same SQL SELECT statement used for PythonGrid.
 
     data = PythonGridDbData('SELECT * FROM orders')
 
@@ -145,7 +145,7 @@ At this point, we can run our program with the command below
 
     flask run
 
-It should show you a beautiful datagrid with data come from the table `orders`. 
+It should give you a beautiful datagrid with data come from the table `orders`. 
 
 The pythonGrid supports
 
