@@ -55,13 +55,15 @@ To make sure your Python is functional, type `python3` in a terminal window, or 
     Type "help", "copyright", "credits" or "license" for more information.
     >>>
 
-The next step is to install Flask web framework, which is a Python package from [PyPI](https://pypi.org/), the official Python package repository. The best way to install from PyPI is to use `pip`, a Python Package manager tool that comes with Python. 
-
 ## Install Flask Framework
+
+The next step is to install Flask web framework, which is a Python package from [PyPI](https://pypi.org/), the official Python package repository. The best way to install from PyPI is to use `pip`, a Python Package manager tool that comes with Python. 
 
 To install Flask, use command below:
 
     pip install flask
+
+## Install Flask Framework under Virtual Environment
 
 The chances are you will get **Permission denied** message because you are trying to install to the operation system that require administrator permission. Instead, it is highly recommended to use [Python virtual environment](https://docs.python.org/3/tutorial/venv.html). Basically, a Python virtual environment is a self-contained separate copy of Python installation. Different applications can then use different virtual environments with different copy of Python without worrying about system permissions.
 
