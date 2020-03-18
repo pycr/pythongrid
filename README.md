@@ -4,7 +4,7 @@ pythonGrid is an easy way to create a fully working datagrid for Python Flask we
 
 ## Requirements
 
-* Python 3.6+
+* Python 3.6
 * Flask
 * PyMysql
 
