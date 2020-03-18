@@ -13,9 +13,9 @@ pythonGrid is an easy way to create a fully working datagrid for Python Flask we
 A couple quick start options are available:
 
 * [Download the latest release](https://github.com/pycr/pythongrid/archive/master.zip)
-* Clone the repo: 
+* Clone the repo:
 
-> git clone https://github.com/pycr/pythongrid.git
+    *git clone https://github.com/pycr/pythongrid.git*
 
 ## Files included
 
@@ -50,7 +50,10 @@ pythonGrid current has two main files in `grid.py` and `data.py` in **app** fold
 
 ## Creating the Database
 
-Find the sample database in **sample** folder named [**sampledb.sql**](https://github.com/pycr/pythongrid/blob/master/app/sample/sampledb.sql). Using your favorite MySQL client such as [MySQL Workbench](https://dev.mysql.com/downloads/workbench/), Create a new database named `sampledb` and run the sample sql script.
+Find the sample database in **sample** folder named [**sampledb.sql**](https://github.com/pycr/pythongrid/blob/master/app/sample/sampledb.sql). Using your favorite MySQL client such as [MySQL Workbench](https://dev.mysql.com/downloads/workbench/)
+
+1. Create a new database named `sampledb`
+2. Run the sample sql script.
 
 ## Install Python
 
