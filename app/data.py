@@ -28,7 +28,7 @@ class PythonGridDbData():
 		self.__num_fields = 0
 		self.__field_names = []
 
-		connection = pymysql.connect(db=app.config['PYTHONGRID_DB_NAME'], user=app.config['PYTHONGRID_DB_USERNAME'], passwd=app.config['PYTHONGRID_DB_PASSWORD'], unix_socket=app.config['PYTHONGRID_DB_SOCKET'])
+		connection = pymysql.connect(host=app.config['PYTHONGRID_DB_HOSTNAME'], db=app.config['PYTHONGRID_DB_NAME'], user=app.config['PYTHONGRID_DB_USERNAME'], passwd=app.config['PYTHONGRID_DB_PASSWORD'], unix_socket=app.config['PYTHONGRID_DB_SOCKET'])
 
 		try:
 			with connection.cursor() as cursor:

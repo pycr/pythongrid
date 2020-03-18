@@ -30,7 +30,7 @@ class PythonGrid():
 		self.export_url = ''
 		self.pdf_logo = ''			# PDF logo property (PDF export and file must be jpg only)
 		self.debug = False			# TODO - will be deprecated next version
-		self.db = pymysql.connect(db=app.config['PYTHONGRID_DB_NAME'], user=app.config['PYTHONGRID_DB_USERNAME'], passwd=app.config['PYTHONGRID_DB_PASSWORD'], unix_socket=app.config['PYTHONGRID_DB_SOCKET'])
+		self.db = pymysql.connect(host=app.config['PYTHONGRID_DB_HOSTNAME'], db=app.config['PYTHONGRID_DB_NAME'], user=app.config['PYTHONGRID_DB_USERNAME'], passwd=app.config['PYTHONGRID_DB_PASSWORD'], unix_socket=app.config['PYTHONGRID_DB_SOCKET'])
 		self.db_connection = []
 		self.obj_subgrid = []        # subjgrid object
 		self.obj_md = []             # master detail object
