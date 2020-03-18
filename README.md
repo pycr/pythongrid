@@ -13,7 +13,9 @@ pythonGrid is an easy way to create a fully working datagrid for Python Flask we
 A couple quick start options are available:
 
 * [Download the latest release](https://github.com/pycr/pythongrid/archive/master.zip)
-* Clone the repo: git clone https://github.com/pycr/pythongrid.git
+* Clone the repo: 
+
+> git clone https://github.com/pycr/pythongrid.git
 
 ## Files included
 
