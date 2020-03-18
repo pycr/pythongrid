@@ -104,13 +104,15 @@ pythonGrid chose the pure Python MySQL client [PyMySQL](https://github.com/PyMyS
 
 ## Configuration
 
-Find file `config.py`, and set the database connection properties according to your environment. You can use socket to connect to your database. 
+Find file `config.py`, and set the database connection properties according to your environment. 
 
-    PYTHONGRID_DB_HOSTNAME = ''
+You can also use a socket to connect to your database without specifying a database host name.
+
+    PYTHONGRID_DB_HOSTNAME = 'mysqldatabase.example.com'
     PYTHONGRID_DB_NAME = 'sampledb'
     PYTHONGRID_DB_USERNAME = 'root'
     PYTHONGRID_DB_PASSWORD = 'root'
-    PYTHONGRID_DB_SOCKET = '/mysql/mysql.sock'
+    PYTHONGRID_DB_SOCKET = ''
 
 ## Initialize Grid
 
