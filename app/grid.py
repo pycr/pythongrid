@@ -722,7 +722,7 @@ class PythonGrid():
 		self.prepare_grid()
 		
 		disp = ''
-		# disp += self.display_script_includeonce()
+		disp += self.display_script_includeonce()
 		disp += self.display_style()
 		disp += self.display_script_begin()
 		disp += self.display_properties_begin()
