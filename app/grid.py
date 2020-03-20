@@ -82,7 +82,7 @@ class PythonGrid():
 		self.__jq_mtype = 'GET'
 		self.__jq_colNames = []
 		# self.__jq_pagerName = ''
-		self.__jq_rowNum = 25
+		self.__jq_rowNum = 10
 		self.__jq_rowList = [10, 25, 50, 100, 200, 500, "10000:All"]
 		self.__jq_sortname = 1
 		self.__jq_sortorder = 'asc'

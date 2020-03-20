@@ -2,20 +2,6 @@
 
 {% block content %}
 
-	{{ grid.set_caption('Orders Table')|safe }}
-	{{ grid.set_col_title('orderDate', 'Order Date')|safe }}
-	{{ grid.set_col_title('orderNumber', 'Order #')|safe }}
-	{{ grid.set_col_hidden(['logTime'])|safe }}
-	{{ grid.set_pagesize(20)|safe }}
-	{{ grid.set_dimension(1000, 400)|safe }}
-	{{ grid.set_col_readonly("status, orderNumber")|safe }}
-	{{ grid.enable_search(true)|safe }}
-	{{ grid.enable_rownumbers(true)|safe}}
-	{{ grid.enable_pagecount(true)|safe}}
-	{{ grid.set_col_width('comments', 500)|safe}}
-	{{ grid.set_col_align('orderNumber', 'right')|safe}}
-	{{ grid.set_col_frozen('orderNumber')|safe}}
-
 	{{ grid.display()|safe }}
 
 {% endblock content %}
