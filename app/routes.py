@@ -56,7 +56,7 @@ def index(demo):
 		grid.set_col_width('comments', 500)
 		grid.set_col_align('orderNumber', 'right')
 
-	return render_template('grid.html', title='GRID', grid=grid)
+	return render_template('grid.html', title=demo, grid=grid)
 
 @app.route('/data', methods=['GET', 'POST'])
 def data():
