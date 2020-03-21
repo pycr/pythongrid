@@ -1,9 +1,29 @@
 {% extends "base.html" %}
 
-{% block content %}
+{% block app_content %}
+
+
+    <h1>PythonGrid Demo - {{ request.path.replace('/', '').replace('_', ' ').upper() }}</h1>
 
 	{{ grid.display()|safe }}
 
-{% endblock content %}
+			
+	<script>
+	jQuery(document).ready(function($){ 
+		
+		setTimeout(function(){
+			pg_orders.setGridWidth($("#gridbox").width());
+		}, 500)
+
+		setTimeout(function(){
+			$(window).bind("resize", function() {
+				pg_orders.setGridWidth($("#mydiv").width());
+			}).trigger("resize");
+		}, 0)
+
+	});
+	</script>
+
+{% endblock app_content %}
 
 {% block scripts %}{% endblock %}
