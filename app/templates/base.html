@@ -31,6 +31,11 @@ function startIntro(){
     intro.setOptions({showProgress: true,
     steps: [
         {
+            element: document.querySelector('.ui-jqgrid-titlebar.ui-jqgrid-caption'),
+            intro: "<h4>Set Datagrid Title</h4><code>grid.set_caption('Orders Table')</code>",
+            position: 'right'
+        },
+        {
             element: document.querySelector('#orders_orderNumber'),
             intro: "<h4>Change Column Title</h4><code>grid.set_col_title('orderNumber', 'Order #')</code>",
             position: 'right'
