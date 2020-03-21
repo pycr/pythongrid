@@ -28,30 +28,36 @@
 <script type="text/javascript">
 function startIntro(){
     var intro = introJs();
-    intro.setOptions({
+    intro.setOptions({showProgress: true,
     steps: [
         {
             element: document.querySelector('#orders_orderNumber'),
-            intro: "<h4>Change column title</h4><code>grid.set_col_title('orderNumber', 'Order #')</code>",
+            intro: "<h4>Change Column Title</h4><code>grid.set_col_title('orderNumber', 'Order #')</code>",
             position: 'right'
         },
         {
             element: document.querySelector('#orders_orderDate'),
-            intro: "<h4>Change column title</h4><code>grid.set_col_title('orderDate', 'Order Date')</code>"
+            intro: "<h4>Change Column Title</h4><code>grid.set_col_title('orderDate', 'Order Date')</code>"
         },
         {
-            element: '#orders_orderNumber',
-            intro: 'More features, more fun.',
+            element: '.form-control.ui-pg-selbox',
+            intro: "<h4>Set Page Size</h4><code>grid.set_pagesize(20)</code>",
             position: 'left'
         },
         {
-            element: '#step4',
-            intro: "Another step.",
+            element: '.btn.ui-pg-button .fa-search',
+            intro: "<h4>Toggle Integrated Search</h4><code>grid.enabled_search(True)</code>",
             position: 'bottom'
         },
         {
-            element: '#step5',
-            intro: 'Get it, use it.'
+            element: document.querySelectorAll('table td.jqgrid-rownum')[0],
+            intro: "<h4>Row Number</h4><code>grid.enable_rownumbers(True)</code>",
+            position: 'right'
+        },
+        {
+            element: '#orders_comments',
+            intro: "<h4>Set column Width</h4><code>grid.set_col_width('comments', 500)</code>",
+            position: 'bottom'
         }
     ]
     });
