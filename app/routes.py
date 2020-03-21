@@ -15,6 +15,7 @@ def index(demo):
 		grid.set_caption('Orders Datagrid')
 
 	elif (demo == 'column_title'):
+		grid.set_col_title('orderNumber', 'Order #')
 		grid.set_col_title('orderDate', 'Order Date')
 
 	elif (demo == 'column_hidden'):
