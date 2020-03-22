@@ -11,18 +11,8 @@
 
 			
 	<script>
-	jQuery(document).ready(function($){ 
-		
-		setTimeout(function(){
-			pg_orders.setGridWidth($("#gridbox").width());
-		}, 500)
-
-		setTimeout(function(){
-			$(window).bind("resize", function() {
-				pg_orders.setGridWidth($("#mydiv").width());
-			}).trigger("resize");
-		}, 0)
-
+	$(window).on("load", function(){
+		pg_orders.setGridWidth($("#gridbox").width());
 	});
 	</script>
 
