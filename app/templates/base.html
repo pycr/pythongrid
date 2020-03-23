@@ -5,9 +5,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/2.9.3/introjs.min.css">
     <style>
         .introjs-tooltip {
-            max-width: 500px;
-            width: 500px;
+            max-width: 600px;
+            width:600px;
             padding: 20px;
+        }
+        h4 {
+            padding-bottom:15px
         }
     </style>
 </head>
@@ -17,24 +20,10 @@
 
     <div class="container" id="gridbox">
 
-        <h1>PythonGrid Demo - {{ title.replace('_',' ').upper() }} 
+        <h1>PythonGrid Demo
             <a class="btn btn-large btn-success" href="javascript:void(0);" onclick="startIntro();">Show me</a>
         </h1>
 
-        <div>
-            <a href="/basic">Basic grid</a> |
-            <a href="/caption">Datagrid caption</a> |
-            <a href="/column_title">Column title</a> |
-            <a href="/column_hidden">Hide column(s)</a> |
-            <a href="/page_size">Set page size</a> |
-            <a href="/dimension">Dimension</a> |
-            <a href="/search">Integrated search</a> |
-            <a href="/row_numer">Enable row number</a> |
-            <a href="/column_width">Column width</a> |
-            <a href="/column_align">Set text align</a> |
-            <a href="/All">Complete Demo</a>
-        </div>
-	
         {% block app_content %}{% endblock %}
 
     </div>
@@ -46,18 +35,22 @@
 <script type="text/javascript">
 function startIntro(){
     var intro = introJs();
-    intro.setOptions({showProgress: true,
+    intro.setOptions({
     steps: [
-
-        {% if title in ['All', 'caption'] %}
+        {
+            element: document.querySelector('#gbox_orders'),
+            intro: "<h4>A 2-line Basic Grid</h4> \
+                    <code>\
+                    grid = PythonGrid('SELECT * FROM orders', 'orderNumber', 'orders')<br /> \
+                    grid.display() \
+                    </code>",
+            position: 'right'
+        },
         {
             element: document.querySelector('.ui-jqgrid-titlebar.ui-jqgrid-caption'),
             intro: "<h4>Set Datagrid Title</h4><code>grid.set_caption('Orders Table')</code>",
             position: 'right'
         },
-        {% endif %}
-
-        {% if title in ['All', 'column_title'] %}
         {
             element: document.querySelector('#orders_orderNumber'),
             intro: "<h4>Change Column Title</h4><code>grid.set_col_title('orderNumber', 'Order #')</code>",
@@ -67,39 +60,36 @@ function startIntro(){
             element: document.querySelector('#orders_orderDate'),
             intro: "<h4>Change Column Title</h4><code>grid.set_col_title('orderDate', 'Order Date')</code>"
         },
-        {% endif %}
-
-        {% if title in ['All', 'page_size'] %}
         {
             element: '.form-control.ui-pg-selbox',
             intro: "<h4>Set Page Size</h4><code>grid.set_pagesize(20)</code>",
             position: 'left'
         },
-        {% endif %}
-
-        {% if title in ['All', 'search'] %}
         {
             element: '.btn.ui-pg-button .fa-search',
             intro: "<h4>Toggle Integrated Search</h4><code>grid.enabled_search(True)</code>",
             position: 'bottom'
         },
-        {% endif %}
-
-        {% if title in ['All', 'row_number'] %}
         {
-            element: document.querySelectorAll('table td.jqgrid-rownum')[0],
+            element: document.querySelector('td.jqgrid-rownum'),
             intro: "<h4>Row Number</h4><code>grid.enable_rownumbers(True)</code>",
             position: 'right'
         },
-        {% endif %}
-
-        {% if title in ['All', 'column_width'] %}
         {
             element: '#orders_comments',
             intro: "<h4>Set column Width</h4><code>grid.set_col_width('comments', 500)</code>",
             position: 'bottom'
-        }
-        {% endif %}
+        },
+        {
+            element: '#orders_orderNumber',
+            intro: "<h4>Set column text align right</h4><code>grid.set_col_align('orderNumber', 'right')</code>",
+            position: 'bottom'
+        },
+        {
+            element: '#orders_comments',
+            intro: "<h4>Set column text align center</h4><code>grid.set_col_align('comments', 'center')</code>",
+            position: 'bottom'
+        },
     ]
     });
 
