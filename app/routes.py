@@ -23,7 +23,7 @@ def index(demo):
 		grid.set_col_title('orderDate', 'Order Date')
 
 	elif (demo == 'column_hidden'):
-		grid.set_col_hidden(['customerNumber, logTime'])
+		grid.set_col_hidden(['customerNumber, logTime, shippedDate, requiredDate'])
 
 	elif (demo == 'page_size'):
 		grid.set_pagesize(20)
@@ -36,7 +36,7 @@ def index(demo):
 
 	elif (demo == 'row_numer'):
 		grid.enable_rownumbers(True)
-		
+
 	elif (demo == 'column_width'):
 		grid.set_col_width('orderNumber', 100)
 		grid.set_col_width('comments', 500)
@@ -51,7 +51,7 @@ def index(demo):
 		grid.set_caption('Orders Table')
 		grid.set_col_title('orderDate', 'Order Date')
 		grid.set_col_title('orderNumber', 'Order #')
-		grid.set_col_hidden(['logTime'])
+		grid.set_col_hidden(['customerNumber, logTime, shippedDate, requiredDate'])
 		grid.set_pagesize(20)
 		grid.set_dimension(1000, 400)
 		grid.enable_search(True)
