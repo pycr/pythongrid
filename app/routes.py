@@ -8,8 +8,8 @@ import pymysql.cursors
 def home():
 	return render_template('index.html')
 
-@app.route('/<demo>')		
-def index(demo):
+@app.route('/demo')		
+def index():
 	grid = PythonGrid('SELECT * FROM orders', 'orderNumber', 'orders')
 
 	grid.set_caption('Orders Table')
@@ -21,10 +21,10 @@ def index(demo):
 	grid.enable_search(True)
 	grid.enable_rownumbers(True)
 	grid.enable_pagecount(True)
-	grid.set_col_width('comments', 500)
-	grid.set_col_align('orderNumber', 'right')
+	grid.set_col_align('status', 'center')
+	grid.set_col_width('comments', 600)
 
-	return render_template('grid.html', title=demo, grid=grid)
+	return render_template('grid.html', title='demo', grid=grid)
 
 @app.route('/data', methods=['GET', 'POST'])
 def data():
