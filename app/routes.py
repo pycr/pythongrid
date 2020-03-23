@@ -4,6 +4,10 @@ from app.grid import PythonGrid
 from app.data import PythonGridDbData
 import pymysql.cursors
 
+@app.route('/')		
+def home():
+	return render_template('index.html')
+
 @app.route('/<demo>')		
 def index(demo):
 	grid = PythonGrid('SELECT * FROM orders', 'orderNumber', 'orders')
@@ -32,10 +36,7 @@ def index(demo):
 
 	elif (demo == 'row_numer'):
 		grid.enable_rownumbers(True)
-
-	elif (demo == 'page_count'):
-		grid.enable_pagecount(True)
-
+		
 	elif (demo == 'column_width'):
 		grid.set_col_width('orderNumber', 100)
 		grid.set_col_width('comments', 500)
@@ -45,6 +46,8 @@ def index(demo):
 		grid.set_col_align('comments', 'center')
 
 	else: # set all properties
+		demo = "All"
+
 		grid.set_caption('Orders Table')
 		grid.set_col_title('orderDate', 'Order Date')
 		grid.set_col_title('orderNumber', 'Order #')

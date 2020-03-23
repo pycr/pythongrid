@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Welcome to Python Grid</title>
+    <title>Welcome to pythonGrid</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/2.9.3/introjs.min.css">
     <style>
         .introjs-tooltip {
-                max-width: 500px;
-                width: 500px;
-                padding: 20px;
+            max-width: 500px;
+            width: 500px;
+            padding: 20px;
         }
     </style>
 </head>
@@ -70,7 +70,12 @@ function startIntro(){
     intro.start();
 }
 </script>
-
+        
+<script>
+$(window).on("load", function(){
+    pg_orders.setGridWidth($("#gridbox").width());
+});
+</script>
 
 </body>
 </html>
