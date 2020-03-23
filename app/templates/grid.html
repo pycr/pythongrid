@@ -2,26 +2,6 @@
 
 {% block app_content %}
 
-
-    <h1>PythonGrid Demo - {{ title.replace('_',' ').upper() }} 
-		<a class="btn btn-large btn-success" href="javascript:void(0);" onclick="startIntro();">Show me</a>
-	</h1>
-
-
-	<div>
-		<a href="/basic">Basic grid</a> |
-		<a href="/caption">Datagrid caption</a> |
-		<a href="/column_title">Column title</a> |
-		<a href="/column_hidden">Hide column(s)</a> |
-		<a href="/page_size">Set page size</a> |
-		<a href="/dimension">Dimension</a> |
-		<a href="/search">Integrated search</a> |
-		<a href="/row_numer">Enable row number</a> |
-		<a href="/column_width">Column width</a> |
-		<a href="/column_align">Set text align</a> |
-		<a href="/all">Complete Demo</a>
-	</div>
-	
 	{{ grid.display()|safe }}
 
 {% endblock app_content %}
