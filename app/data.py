@@ -17,10 +17,10 @@ class PythonGridDbData():
 		self.__sql_filter 	 = '' #TODO filter from set_query_filter()
 		self.__has_pagecount = True
 
-		self.__page  = int(request.args['page'])
-		self.__limit = int(request.args['rows'])  	# get how many rows we want to have into the grid - rowNum parameter in the grid
-		self.__sidx  = str(request.args['sidx']) 	# get index row - i.e. user click to sort. At first time sortname parameter - // after that the index from colModel
-		self.__sord  = request.args['sord']		# sorting order - at first time sortorder
+		self.__page  = int(request.args['page']) if 'page' in request.args.keys() else 1
+		self.__limit = int(request.args['rows']) if 'page' in request.args.keys() else 1  	# get how many rows we want to have into the grid - rowNum parameter in the grid
+		self.__sidx  = str(request.args['sidx']) if 'page' in request.args.keys() else 1 	# get index row - i.e. user click to sort. At first time sortname parameter - // after that the index from colModel
+		self.__sord  = request.args['sord'] if 'page' in request.args.keys() else 'asc'		# sorting order - at first time sortorder
 		
 		self.__rs = None
 		self.__count = 0
