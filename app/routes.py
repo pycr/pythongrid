@@ -4,11 +4,7 @@ from app.grid import PythonGrid
 from app.data import PythonGridDbData
 import pymysql.cursors
 
-@app.route('/')		
-def home():
-	return render_template('index.html')
-
-@app.route('/demo')		
+@app.route('/')	
 def index():
 	grid = PythonGrid('SELECT * FROM orders', 'orderNumber', 'orders')
 
