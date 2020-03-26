@@ -1,6 +1,8 @@
 # pythonGrid
 
-[Quick Demo](https://demo.pythongrid.com/)
+![Image of pythonGrid Demo](app/sample/demo.png)
+
+**[Quick Demo](https://demo.pythongrid.com/)**
 
 pythonGrid is an easy way to create a fully working datagrid for Python Flask web framework that connects to a MySql/MariaDB database.
 
@@ -110,11 +112,13 @@ Find file `config.py`, and set the database connection properties according to y
 
 You can also use a socket to connect to your database without specifying a database host name.
 
-    PYTHONGRID_DB_HOSTNAME = 'mysqldatabase.example.com'
-    PYTHONGRID_DB_NAME = 'sampledb'
-    PYTHONGRID_DB_USERNAME = 'root'
-    PYTHONGRID_DB_PASSWORD = 'root'
-    PYTHONGRID_DB_SOCKET = ''
+```python
+PYTHONGRID_DB_HOSTNAME = 'mysqldatabase.example.com'
+PYTHONGRID_DB_NAME = 'sampledb'
+PYTHONGRID_DB_USERNAME = 'root'
+PYTHONGRID_DB_PASSWORD = 'root'
+PYTHONGRID_DB_SOCKET = ''
+```
 
 ## Initialize Grid
 
@@ -128,7 +132,9 @@ The file `routes.py` contains our `def index()` view functions associate with ro
 
 Inside the function, it creates a new instance of the PythonGrid class and assigns this object to the local variable `grid`. Note `orders` is a table from sample database [**sampledb.sql**](https://github.com/pycr/pythongrid/blob/master/app/sample/sampledb.sql).
 
-    grid = PythonGrid('SELECT * FROM orders', 'orderNumber', 'orders')
+```python
+grid = PythonGrid('SELECT * FROM orders', 'orderNumber', 'orders')
+```
 
 PythonGrid initializer shown above requires 3 parameters:
 
@@ -138,7 +144,9 @@ PythonGrid initializer shown above requires 3 parameters:
 
 The view function pass the grid object into the rendered template from `grid.html` template.
 
-    return render_template('grid.html', title='GRID', grid=grid)
+```python
+return render_template('grid.html', title='GRID', grid=grid)
+```
 
 ### data()
 
@@ -148,7 +156,9 @@ In the next view function `data()`, we create a new instance for `PythonGridDbDa
 
 It has requires only 1 parameter, which should be the SAME Sql Select statement used for PythonGrid.
 
-    data = PythonGridDbData('SELECT * FROM orders')
+```python
+data = PythonGridDbData('SELECT * FROM orders')
+```
 
 ## Hello, Grid
 
@@ -171,4 +181,4 @@ The pythonGrid supports
 * Column width
 * Column text alignment
 
-[Run Demo](https://demo.pythongrid.com/)
+**[Run Demo](https://demo.pythongrid.com/)**
