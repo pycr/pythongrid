@@ -1,5 +1,7 @@
 # pythonGrid
 
+[Quick Demo](https://demo.pythongrid.com/)
+
 pythonGrid is an easy way to create a fully working datagrid for Python Flask web framework that connects to a MySql/MariaDB database.
 
 ## Requirements
@@ -13,7 +15,7 @@ pythonGrid is an easy way to create a fully working datagrid for Python Flask we
 A couple quick start options are available:
 
 * [Download the latest release](https://github.com/pycr/pythongrid/archive/master.zip)
-* Clone the repo:
+* Clone the repo (recommended):
 
     *git clone https://github.com/pycr/pythongrid.git*
 
@@ -122,37 +124,39 @@ We have two view functions that need initialization.
 
 ### index()
 
-The file `routes.py` contains our `def index()` view functions associate with URL `/` and `/grid`. This means that when a web browser requests either of these two URLs, Flask is going to invoke this function and pass the return value of it back to the browser as a response.
+The file `routes.py` contains our `def index()` view functions associate with root URL `/`. This means that when a web browser requests the URL, Flask is going to invoke this function and pass the return value of it back to the browser as a response.
 
 Inside the function, it creates a new instance of the PythonGrid class and assigns this object to the local variable `grid`. Note `orders` is a table from sample database [**sampledb.sql**](https://github.com/pycr/pythongrid/blob/master/app/sample/sampledb.sql).
 
     grid = PythonGrid('SELECT * FROM orders', 'orderNumber', 'orders')
 
-The PythonGrid initializer requires three parameters:
+PythonGrid initializer shown above requires 3 parameters:
 
 1. A simple SQL SELECT statement
 2. The database table primary key
 3. The database table name
 
-The view function returns the rendered template from `grid.html` template. It passes the grid object.
+The view function pass the grid object into the rendered template from `grid.html` template.
 
     return render_template('grid.html', title='GRID', grid=grid)
 
 ### data()
 
+Next, we need the data for the grid (thus the datagrid :-) 
+
 In the next view function `data()`, we create a new instance for `PythonGridDbData` class that is responsible for retrieve data from the database.
 
-It has requires only one parameter, which should be the same SQL SELECT statement used for PythonGrid.
+It has requires only 1 parameter, which should be the SAME Sql Select statement used for PythonGrid.
 
     data = PythonGridDbData('SELECT * FROM orders')
 
-## Hello, Grid!
+## Hello, Grid
 
 At this point, we can run our program with the command below
 
     flask run
 
-It should give you a beautiful datagrid with data come from the table `orders`. 
+It should give you a beautiful datagrid with data come from the table `orders`.
 
 The pythonGrid supports
 
@@ -166,3 +170,5 @@ The pythonGrid supports
 * Datagrid dimension
 * Column width
 * Column text alignment
+
+[Run Demo](https://demo.pythongrid.com/)
