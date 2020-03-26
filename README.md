@@ -19,30 +19,34 @@ A couple quick start options are available:
 * [Download the latest release](https://github.com/pycr/pythongrid/archive/master.zip)
 * Clone the repo (recommended):
 
-    *git clone https://github.com/pycr/pythongrid.git*
+```bash
+git clone https://github.com/pycr/pythongrid.git
+```
 
 ## Files included
 
 Within the download you will see something like this:
 
-    ├── LICENSE
-    ├── README.md
-    ├── app
-    │   ├── __init__.py
-    │   ├── data.py
-    │   ├── grid.py
-    │   ├── routes.py
-    │   ├── static
-    │   └── templates
-    │       ├── 404.html
-    │       ├── base.html
-    │       ├── grid.html
-    │       └── index.html
-    ├── sample
-    │   ├── sampledb.sql
-    ├── config.py
-    ├── index.py
-    └── requirements.txt
+```bash
+├── LICENSE
+├── README.md
+├── app
+│   ├── __init__.py
+│   ├── data.py
+│   ├── grid.py
+│   ├── routes.py
+│   ├── static
+│   └── templates
+│       ├── 404.html
+│       ├── base.html
+│       ├── grid.html
+│       └── index.html
+├── sample
+│   ├── sampledb.sql
+├── config.py
+├── index.py
+└── requirements.txt
+```
 
 pythonGrid current has two main files in `grid.py` and `data.py` in **app** folder.
 
@@ -65,10 +69,12 @@ First of all, if you don't have Python installed on your computer, download and 
 
 To make sure your Python is functional, type `python3` in a terminal window, or just `python` if that does not work. Here is what you should expect to see:
 
-    Python 3.6.3 (v3.6.3:2c5fed86e0, Oct  3 2017, 00:32:08)
-    [GCC 4.2.1 (Apple Inc. build 5666) (dot 3)] on darwin
-    Type "help", "copyright", "credits" or "license" for more information.
-    >>>
+```bash
+Python 3.6.3 (v3.6.3:2c5fed86e0, Oct  3 2017, 00:32:08)
+[GCC 4.2.1 (Apple Inc. build 5666) (dot 3)] on darwin
+Type "help", "copyright", "credits" or "license" for more information.
+>>>
+```
 
 Next, you need to install Flask framework. You got two options.
 
@@ -78,7 +84,9 @@ The next step is to install Flask web framework, which is a Python package from 
 
 To install Flask, use command below:
 
-    pip install flask
+```bash
+pip install flask
+```
 
 ## Install Flask Framework via Virtual Environment (Option 2) - Recommended
 
@@ -86,25 +94,35 @@ The chances are you will get **Permission denied** message because you are tryin
 
 The following command will creates a virtual environment named `venv` stored in a directory also named `venv`.
 
-    python3 -m venv venv
+```bash
+python3 -m venv venv
+```
 
 Activate the new virtual environment:
 
-    source venv/bin/activate
+```bash
+source venv/bin/activate
+```
 
 Now the terminal prompt is modified to include the name of the activated virtual environment
 
-    (venv) $ _
+```bash
+(venv) $ _
+```
 
 With a new virtual environment created and activated, finally let's install Flask:
 
-    pip install flask
+```bash
+pip install flask
+```
 
 ## Install PyMySQL
 
 pythonGrid chose the pure Python MySQL client [PyMySQL](https://github.com/PyMySQL/PyMySQL) to connect to MySQL database.
 
-    pip install pymysql
+```bash
+pip install pymysql
+```
 
 ## Configuration
 
