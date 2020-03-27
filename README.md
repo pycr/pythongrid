@@ -4,12 +4,12 @@
 
 **[Quick Demo](https://demo.pythongrid.com/)**
 
-pythonGrid is an easy way to create a fully working datagrid for Python Flask web framework that connects to a MySql/MariaDB database.
+pythonGrid is an easy way to create a fully working datagrid for Python web framework that connects to a MySql/MariaDB database. Currently only [Flask](https://palletsprojects.com/p/flask/) framework is supported. More frameworks support are coming.
 
 ## Requirements
 
 * Python 3.6 (3.7, 3.8 support coming up)
-* Flask
+* Flask (More frameworks support coming)
 * PyMysql
 
 ## Quick Start
