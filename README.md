@@ -78,19 +78,9 @@ Type "help", "copyright", "credits" or "license" for more information.
 
 Next, you need to install Flask framework. You got two options.
 
-## Install Flask Framework (Option 1)
+## Install Flask Framework via Virtual Environment
 
-The next step is to install Flask web framework, which is a Python package from [PyPI](https://pypi.org/), the official Python package repository. The best way to install from PyPI is to use `pip`, a Python Package manager tool that comes with Python. 
-
-To install Flask, use command below:
-
-```bash
-pip install flask
-```
-
-## Install Flask Framework via Virtual Environment (Option 2) - Recommended
-
-The chances are you will get **Permission denied** message because you are trying to install to the operation system that require administrator permission. Instead, it is highly recommended to use [Python virtual environment](https://docs.python.org/3/tutorial/venv.html). Basically, a Python virtual environment is a self-contained separate copy of Python installation. Different applications can then use different virtual environments with different copy of Python without worrying about system permissions.
+It is highly recommended to use [Python virtual environment](https://docs.python.org/3/tutorial/venv.html). Basically, a Python virtual environment is a self-contained separate copy of Python installation. Different applications can then use different virtual environments with different copy of Python without worrying about system permissions.
 
 The following command will creates a virtual environment named `venv` stored in a directory also named `venv`.
 
@@ -110,18 +100,14 @@ Now the terminal prompt is modified to include the name of the activated virtual
 (venv) $ _
 ```
 
-With a new virtual environment created and activated, finally let's install Flask:
+With a new virtual environment created and activated, finally let's install dependents:
+
+## Install Dependents
+
+pythonGrid has a few dependents including Flask and pure Python MySQL client [PyMySQL](https://github.com/PyMySQL/PyMySQL) to connect to MySQL database. It will support other types of databases in the future.
 
 ```bash
-pip install flask
-```
-
-## Install PyMySQL
-
-pythonGrid chose the pure Python MySQL client [PyMySQL](https://github.com/PyMySQL/PyMySQL) to connect to MySQL database.
-
-```bash
-pip install pymysql
+pip install -r requirements.txt
 ```
 
 ## Configuration
@@ -135,7 +121,6 @@ PYTHONGRID_DB_HOSTNAME = 'mysqldatabase.example.com'
 PYTHONGRID_DB_NAME = 'sampledb'
 PYTHONGRID_DB_USERNAME = 'root'
 PYTHONGRID_DB_PASSWORD = 'root'
-PYTHONGRID_DB_SOCKET = ''
 ```
 
 ## Initialize Grid
