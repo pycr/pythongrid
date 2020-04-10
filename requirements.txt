@@ -1,23 +1,16 @@
+<<<<<<< HEAD
 awscli==1.11.169
 bleach==3.1.4
 botocore==1.7.27
 Click==7.0
 colorama==0.3.7
 docutils==0.14
+=======
+click==7.1.1
+>>>>>>> Updated requirements.txt
 Flask==1.1.1
-html5lib==0.9999999
 itsdangerous==1.1.0
-Jinja2==2.10.3
-jmespath==0.9.3
-Markdown==2.6.9
+Jinja2==2.11.1
 MarkupSafe==1.1.1
-numpy==1.13.3
-protobuf==3.4.0
-pyasn1==0.3.7
-python-dateutil==2.6.1
-PyYAML==3.12
-rsa==3.4.2
-s3transfer==0.1.11
-six==1.11.0
-tensorflow-tensorboard==0.1.8
-Werkzeug==0.16.0
+PyMySQL==0.9.3
+Werkzeug==1.0.0
