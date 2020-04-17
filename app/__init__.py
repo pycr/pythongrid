@@ -1,7 +1,6 @@
 from flask import Flask
 import logging
 from config import Config
-from flask_sqlalchemy import SQLAlchemy
 # from flask_debugtoolbar import DebugToolbarExtension
 
 app = Flask(__name__)

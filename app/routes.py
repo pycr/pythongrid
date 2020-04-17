@@ -2,7 +2,6 @@ from flask import render_template, flash, redirect, url_for
 from app import app
 from app.grid import PythonGrid
 from app.data import PythonGridDbData
-import pymysql.cursors
 
 @app.route('/')	
 def index():

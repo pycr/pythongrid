@@ -8,8 +8,8 @@ class Config(object):
 	PYTHONGRID_DB_NAME = 'sampledb'
 	PYTHONGRID_DB_USERNAME = 'root'
 	PYTHONGRID_DB_PASSWORD = 'root'
+	PYTHONGRID_DB_TYPE = 'mysql+pymysql'
 	PYTHONGRID_DB_SOCKET = '/Applications/MAMP/tmp/mysql/mysql.sock'
-	PYTHONGRID_DB_TYPE = ''
 	PYTHONGRID_DB_CHARSET = ''
 
 	SECRET_KEY = os.environ.get('SECRET_KEY') or 'abcdefghijklmnopqrstuvwxyz'

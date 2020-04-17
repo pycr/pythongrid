@@ -1,4 +1,4 @@
-import pymysql.cursors
+from sqlalchemy import create_engine
 import json, string
 import os, sys, math
 from app import app
@@ -28,7 +28,8 @@ class PythonGridDbData():
 		self.__num_fields = 0
 		self.__field_names = []
 
-		connection = pymysql.connect(host=app.config['PYTHONGRID_DB_HOSTNAME'], db=app.config['PYTHONGRID_DB_NAME'], user=app.config['PYTHONGRID_DB_USERNAME'], passwd=app.config['PYTHONGRID_DB_PASSWORD'], unix_socket=app.config['PYTHONGRID_DB_SOCKET'])
+		db_engine = create_engine(app.config['PYTHONGRID_DB_TYPE']+'://'+app.config['PYTHONGRID_DB_USERNAME']+':'+app.config['PYTHONGRID_DB_PASSWORD']+'@'+app.config['PYTHONGRID_DB_HOSTNAME']+'/'+app.config['PYTHONGRID_DB_NAME']+'?unix_socket='+app.config['PYTHONGRID_DB_SOCKET'])
+		connection = db_engine.raw_connection()
 
 		try:
 			with connection.cursor() as cursor:
