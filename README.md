@@ -9,8 +9,8 @@ pythonGrid is an easy way to create a fully working datagrid for Python web fram
 ## Requirements
 
 * Python 3.6 (3.7, 3.8 support coming up)
-* Flask (More frameworks support coming)
-* PyMysql
+* Flask (Django, Web2Py, CherryPy and other major web frameworks support are coming)
+* SQLAlchemy
 
 ## Quick Start
 
@@ -104,7 +104,7 @@ With a new virtual environment created and activated, finally let's install depe
 
 ## Install Dependents
 
-pythonGrid has a few dependents including Flask and pure Python MySQL client [PyMySQL](https://github.com/PyMySQL/PyMySQL) to connect to MySQL database. It will support other types of databases in the future.
+pythonGrid uses [SQLAlchemy](https://www.sqlalchemy.org/) to support different types of database.
 
 ```bash
 pip install -r requirements.txt
