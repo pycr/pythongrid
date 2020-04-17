@@ -112,15 +112,16 @@ pip install -r requirements.txt
 
 ## Configuration
 
-Find file `config.py`, and set the database connection properties according to your environment. 
+Find file `config.py`, and set the database connection properties according to your environment. The demo uses MySQL database.
 
-You can also use a socket to connect to your database without specifying a database host name.
+You can also use a socket to connect to your database without specifying a database host name. 
 
 ```python
 PYTHONGRID_DB_HOSTNAME = 'mysqldatabase.example.com'
 PYTHONGRID_DB_NAME = 'sampledb'
 PYTHONGRID_DB_USERNAME = 'root'
 PYTHONGRID_DB_PASSWORD = 'root'
+PYTHONGRID_DB_TYPE = 'mysql+pymysql'
 ```
 
 ## Initialize Grid
