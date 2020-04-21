@@ -42,7 +42,8 @@ Within the download you will see something like this:
 │       ├── grid.html
 │       └── index.html
 ├── sample
-│   ├── sampledb.sql
+│   ├── sampledb_postgres.sql
+│   ├── sampledb_mysql.sql
 ├── config.py
 ├── index.py
 └── requirements.txt
@@ -58,7 +59,7 @@ pythonGrid current has two main files in `grid.py` and `data.py` in **app** fold
 
 ## Creating the Database
 
-Find the sample database in **sample** folder named [**sampledb.sql**](https://github.com/pycr/pythongrid/blob/master/app/sample/sampledb.sql). Using your favorite MySQL client such as [MySQL Workbench](https://dev.mysql.com/downloads/workbench/)
+Find the sample database in folder [**sampledb**](https://github.com/pycr/pythongrid/blob/master/app/sample/). Using your favorite MySQL client such as [MySQL Workbench](https://dev.mysql.com/downloads/workbench/)
 
 1. Create a new database named `sampledb`
 2. Run the sample sql script.
@@ -134,7 +135,7 @@ We have two view functions that need initialization.
 
 The file `routes.py` contains our `def index()` view functions associate with root URL `/`. This means that when a web browser requests the URL, Flask is going to invoke this function and pass the return value of it back to the browser as a response.
 
-Inside the function, it creates a new instance of the PythonGrid class and assigns this object to the local variable `grid`. Note `orders` is a table from sample database [**sampledb.sql**](https://github.com/pycr/pythongrid/blob/master/app/sample/sampledb.sql).
+Inside the function, it creates a new instance of the PythonGrid class and assigns this object to the local variable `grid`. Note `orders` is a table from sample database [**sampledb**](https://github.com/pycr/pythongrid/blob/master/app/sample/).
 
 ```python
 grid = PythonGrid('SELECT * FROM orders', 'orderNumber', 'orders')
