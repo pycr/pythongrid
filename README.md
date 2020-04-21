@@ -4,7 +4,7 @@
 
 **[Quick Demo](https://demo.pythongrid.com/)**
 
-pythonGrid is an easy way to create a fully working datagrid for Python web framework that connects to a MySql/MariaDB database. Currently only [Flask](https://palletsprojects.com/p/flask/) framework is supported. More frameworks support are coming.
+pythonGrid is an easy way to create a fully working datagrid for Python web framework that connects to a relation database such as Postgres or MySql/MariaDB database. Currently only [Flask](https://palletsprojects.com/p/flask/) framework is supported. More frameworks support are coming.
 
 ## Requirements
 
@@ -59,7 +59,7 @@ pythonGrid current has two main files in `grid.py` and `data.py` in **app** fold
 
 ## Creating the Database
 
-Find the sample database in folder [**sampledb**](https://github.com/pycr/pythongrid/blob/master/app/sample/). Using your favorite MySQL client such as [MySQL Workbench](https://dev.mysql.com/downloads/workbench/)
+Find the sample database in folder [**sampledb**](https://github.com/pycr/pythongrid/blob/master/app/sample/). Using your favorite MySQL os Postgres client (more database supports are coming).
 
 1. Create a new database named `sampledb`
 2. Run the sample sql script.
