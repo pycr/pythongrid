@@ -248,7 +248,7 @@ class PythonGrid():
 		if not self.__jq_autoresizeOnLoad:
 			props += 'width:"' + str(self.__jq_width) + '"' + ",\n"
 		
-		props += 'sortable:' + str(len(self.__col_frozen)).lower() + ",\n"
+		props += 'sortable:' + str(len(self.__col_frozen)==0).lower() + ",\n"
 		props += 'loadError:' + """ 
                     function(xhr,status, err) {
                         try{
