@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Welcome to pythonGrid</title>
+    <meta charset="UTF-8">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/2.9.3/introjs.min.css">
     <style>
         .introjs-tooltip {
@@ -165,7 +166,7 @@ _dcs.account = '8708792';
 })();
 
 $(window).on("load", function(){
-    pg_orders.setGridWidth($("#gridbox").width());
+    $('#orders').jqGrid('setGridWidth', ($("#gridbox").width()));
 });
 </script>
 

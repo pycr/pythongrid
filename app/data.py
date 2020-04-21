@@ -137,7 +137,11 @@ class PythonGridDbData():
 				if start < 0: start = 0
 
 				# get records
-				cursor.execute(SQL + ' LIMIT ' + str(start) + ', ' + str(self.__limit))
+				SQL += ' LIMIT ' + str(self.__limit) + ' OFFSET ' + str(start)
+
+				app.logger.info(SQL)
+								
+				cursor.execute(SQL)
 				self.__rs = cursor.fetchall() 
 
 				# total record count used for pagination (unfortunate performance penality).

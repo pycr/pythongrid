@@ -31,7 +31,7 @@ class PythonGrid():
 		self.pdf_logo = ''			# PDF logo property (PDF export and file must be jpg only)
 		self.debug = False			# TODO - will be deprecated next version
 		
-		self.db = create_engine(app.config['PYTHONGRID_DB_TYPE']+'://'+app.config['PYTHONGRID_DB_USERNAME']+':'+app.config['PYTHONGRID_DB_PASSWORD']+'@'+app.config['PYTHONGRID_DB_HOSTNAME']+'/'+app.config['PYTHONGRID_DB_NAME']+'?unix_socket='+app.config['PYTHONGRID_DB_SOCKET'])
+		self.db = create_engine(app.config['PYTHONGRID_DB_TYPE']+'://'+app.config['PYTHONGRID_DB_USERNAME']+':'+app.config['PYTHONGRID_DB_PASSWORD']+'@'+app.config['PYTHONGRID_DB_HOSTNAME']+'/'+app.config['PYTHONGRID_DB_NAME']+'?unix_socket='+app.config['PYTHONGRID_DB_SOCKET'], encoding=app.config['PYTHONGRID_DB_CHARSET'])
 		
 		self.db_connection = []
 		self.obj_subgrid = []        # subjgrid object
@@ -130,7 +130,7 @@ class PythonGrid():
 		# others
 		self.__num_rows = 0
 		self.__num_fields = 0
-		self.__ver_num = 'pythonGrid(v1.1) {free-jqGrid:v4.13.6, jQuery:v3.3.1, jQuery UI:1.11.2}'
+		self.__ver_num = 'pythonGrid(v1.2) {free-jqGrid:v4.13.6, jQuery:v3.3.1, jQuery UI:1.11.2}'
 		self.__form_width = 580        # FORM edit dialog width. jqgrid defaults to 300, so does 
 		self.__form_height = '100%'       # FORM edit dialog height. the height default to -1 (an invalid #, so jqgrid will automatically resize based on # of lines
 		self.__edit_mode  = 'NONE'        # CELL, INLINE, FORM, or NONE
@@ -402,6 +402,7 @@ class PythonGrid():
 
 		for col_name in field_names:
 			# check descriptive titles
+			col_name = str(col_name, 'utf-8')
 			if col_name in self.__col_titles:
 				col_names.append(self.__col_titles[col_name])
 			else:
@@ -450,7 +451,7 @@ class PythonGrid():
 		while i < self.__num_fields:
 			cols = OrderedDict()
 
-			col_name = field_names[i]
+			col_name = str(field_names[i], 'utf-8')
 			col_type = field_types[i]
 
 			cols['autoResizable'] = True
