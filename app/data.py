@@ -38,7 +38,7 @@ class PythonGridDbData():
 				cursor.execute(self.__grid_sql)
 
 				self.__count = cursor.rowcount
-				self.__field_names = [i[0] for i in cursor.description]
+				self.__field_names = [str(i[0], 'utf-8') for i in cursor.description]
 				self.__field_types = [i[1] for i in cursor.description]
 
 				sqlWhere = ''
