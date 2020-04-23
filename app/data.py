@@ -69,9 +69,9 @@ class PythonGridDbData():
 					if type(fm_type) == sqlalchemy.sql.sqltypes.INTEGER or \
 						type(fm_type) == sqlalchemy.sql.sqltypes.NUMERIC or \
 						type(fm_type) == sqlalchemy.sql.sqltypes.Float:
-						sqlWhere += " AND " + key + " = " + value
+						sqlWhere += " AND " + sqlalchemy_utils.functions.quote(engine, key) + " = " + value
 					else:
-						sqlWhere += " AND " + key + " LIKE '" + value + "%'"
+						sqlWhere += " AND " + sqlalchemy_utils.functions.quote(engine, key) + " LIKE '" + value + "%'"
 
 			# integrated toolbar and advanced search    
 			if 'filters' in request.args.keys() and request.args['filters'] != '' :
