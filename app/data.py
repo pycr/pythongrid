@@ -102,7 +102,7 @@ class PythonGridDbData():
 							filter = filter.replace("'", "")
 							filter = filter.replace("%s", "'%s'")
 
-					sqlWhere += groupOp + " " + rules[i]['field'] + \
+					sqlWhere += groupOp + " " + sqlalchemy_utils.functions.quote(engine, rules[i]['field']) + \
 								(filter % rules[i]['data'])
 
 		# remove leading sql AND/OR
