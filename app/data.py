@@ -1,4 +1,5 @@
-from sqlalchemy import create_engine
+import sqlalchemy
+import sqlalchemy_utils
 import json, string
 import os, sys, math
 from app import app
@@ -27,8 +28,167 @@ class PythonGridDbData():
 		self.__total_pages = 0
 		self.__num_fields = 0
 		self.__field_names = []
+		self.__field_types = []
 
-		db_engine = create_engine(app.config['PYTHONGRID_DB_TYPE']+'://'+app.config['PYTHONGRID_DB_USERNAME']+':'+app.config['PYTHONGRID_DB_PASSWORD']+'@'+app.config['PYTHONGRID_DB_HOSTNAME']+'/'+app.config['PYTHONGRID_DB_NAME']+'?unix_socket='+app.config['PYTHONGRID_DB_SOCKET'])
+
+
+
+
+		engine = sqlalchemy.create_engine(app.config['PYTHONGRID_DB_TYPE']+'://'+app.config['PYTHONGRID_DB_USERNAME']+':'+app.config['PYTHONGRID_DB_PASSWORD']+'@'+app.config['PYTHONGRID_DB_HOSTNAME']+'/'+app.config['PYTHONGRID_DB_NAME']+'?unix_socket='+app.config['PYTHONGRID_DB_SOCKET']).connect()
+		md = sqlalchemy.MetaData()
+		
+		table = sqlalchemy.Table(self.__gridName, md, autoload=True, autoload_with=engine)
+		columns = table.c
+
+		for column in columns:
+			self.__field_names.append(column.name)
+			self.__field_types.append(column.type)
+
+
+		fm_type = self.__field_types[0]
+
+		sqlWhere = ''
+
+		if '_search' in request.args.keys() and request.args['_search'] == 'true':
+			searchOn = True
+		else:
+			searchOn = False
+
+		if searchOn:
+			col_dbnames = []
+			col_dbnames = self.__field_names
+
+			# check if the key is an actual database field. If so, add it to SQL Where (sqlWhere) statement
+			for key, value in enumerate(request.args):
+				if key in col_dbnames:
+				
+					field_index = self.__field_names.index(key)
+					fm_type = self.__field_types[field_index]
+
+					if type(fm_type) == sqlalchemy.sql.sqltypes.INTEGER:
+						sqlWhere += " AND " + key + " = " + value
+					else:
+						sqlWhere += " AND " + key + " LIKE '" + value + "%'"
+
+			# integrated toolbar and advanced search    
+			if 'filters' in request.args.keys() and request.args['filters'] != '' :
+				operation = {
+					"eq": " ='%s' ","ne": " !='%s' ","lt": " < %s ",
+					"le": " <= %s ","gt": " > %s ","ge": " >= %s ",
+					"bw": " like '%s%%' ","bn": " not like '%s%%' " ,
+					"in":  " in (%s) ","ni":  " not in (%s) ",
+					"ew":  " like '%%%s' ","en":  " not like '%%%s' ",
+					"cn":  " like '%%%s%%' ","nc":  " not like '%%%s%%' "
+				}
+
+				filters = json.loads(request.args['filters'])						
+				groupOp = filters['groupOp']	# AND/OR
+				rules = filters['rules']
+
+				for i in range(0, len(rules)):
+					filter = operation[rules[i]['op']]
+
+					# surround date fields with quotes for SQL date comparison
+					field_index = self.__field_names.index(rules[i]['field'])
+					fm_type = self.__field_types[field_index]
+					
+					if type(fm_type) == sqlalchemy.sql.sqltypes.DATE or type(fm_type) == sqlalchemy.sql.sqltypes.TIMESTAMP \
+						or type(fm_type) == sqlalchemy.sql.sqltypes.DATETIME or type(fm_type) == sqlalchemy.sql.sqltypes.TIME:
+						
+						dateOps = ['eq', 'ne', 'lt', 'le', 'gt', 'ge']
+
+						op = rules[i]['op']
+						if op in dateOps :
+							filter = filter.replace("'", "")
+							filter = filter.replace("%s", "'%s'")
+
+					sqlWhere += groupOp + " " + rules[i]['field'] + \
+								(filter % rules[i]['data'])
+
+		# remove leading sql AND/OR
+		if 'AND ' in sqlWhere:
+			sqlWhere = sqlWhere[len('AND '):]
+		if 'OR ' in sqlWhere:
+			sqlWhere = sqlWhere[len('OR '):]
+
+
+		app.logger.info(sqlWhere)
+
+
+		# (MySql only) escape column name contains '-' for sorting 
+		if '-' in self.__sidx :
+			self.__sidx = '`' + self.__sidx.upper() + '`'
+		
+		# set ORDER BY. Don't use if user hasn't select a sort
+		sqlOrderBy = ''
+		if not self.__sidx:
+			pass
+		elif self.__sidx == "1":
+			pass
+		else:
+			sqlOrderBy = f" ORDER BY {sqlalchemy_utils.functions.quote(engine, self.__sidx)} {self.__sord}"
+
+
+		app.logger.info(sqlOrderBy)
+
+
+		# ****************** prepare the final query ***********************
+		# Store GROUP BY Position 
+		groupBy_Position = sql.upper().find("GROUP BY")
+
+		if self.__sql_filter != '' and searchOn :
+			SQL = self.__grid_sql + ' WHERE ' + self.__sql_filter + ' AND (' + sqlWhere + ')' + sqlOrderBy
+		elif self.__sql_filter != '' and not searchOn :
+			SQL = self.__grid_sql + ' WHERE ' + self.sql_filter + sqlOrderBy
+		elif self.__sql_filter == '' and searchOn :
+			SQL = self.__grid_sql + ' WHERE ' + sqlWhere + sqlOrderBy
+		else:
+			SQL = self.__grid_sql + sqlOrderBy
+
+
+		# ******************* execute query finally *****************
+		# calculate the starting position of the rows 
+		start = self.__limit * self.__page - self.__limit
+
+		# if for some reasons start position is negative set it to 0. typical case is that the user type 0 for the requested page 
+		if start < 0: start = 0
+
+		# get records
+		SQL += ' LIMIT ' + str(self.__limit) + ' OFFSET ' + str(start)
+
+
+		app.logger.info(SQL)
+
+
+		with engine.connect() as conn:
+			self.__rs = conn.execute(SQL).fetchall() 
+
+		# total record count used for pagination (unfortunate performance penality).
+		self.__count = self.__count if self.__has_pagecount else 1000000000
+		self.__num_fields = len(self.__field_names)
+
+		# calculate the total pages for the query 
+		if self.__count > 0 and self.__limit > 0 : 
+			self.__total_pages = math.ceil(self.__count / self.__limit) 
+		else: 
+			self.__total_pages = 0
+
+		# if for some reasons the requested page is greater than the total set the requested page to total page 
+		if self.__page > self.__total_pages:
+			self.__page = self.__total_pages
+
+
+
+
+
+
+
+
+
+
+		"""
+
+		db_engine = sqlalchemy.create_engine(app.config['PYTHONGRID_DB_TYPE']+'://'+app.config['PYTHONGRID_DB_USERNAME']+':'+app.config['PYTHONGRID_DB_PASSWORD']+'@'+app.config['PYTHONGRID_DB_HOSTNAME']+'/'+app.config['PYTHONGRID_DB_NAME']+'?unix_socket='+app.config['PYTHONGRID_DB_SOCKET'])
 		connection = db_engine.raw_connection()
 
 		try:
@@ -38,7 +198,7 @@ class PythonGridDbData():
 				cursor.execute(self.__grid_sql)
 
 				self.__count = cursor.rowcount
-				self.__field_names = [str(i[0], 'utf-8') for i in cursor.description]
+				self.__field_names = [i[0] for i in cursor.description]
 				self.__field_types = [i[1] for i in cursor.description]
 
 				sqlWhere = ''
@@ -160,6 +320,8 @@ class PythonGridDbData():
 
 		finally:
 			connection.close()
+
+		"""
 
 
 	def getData(self):

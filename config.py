@@ -10,7 +10,7 @@ class Config(object):
 	PYTHONGRID_DB_NAME = 'sampledb'
 	PYTHONGRID_DB_USERNAME = 'root'
 	PYTHONGRID_DB_PASSWORD = 'root'
-	PYTHONGRID_DB_TYPE = 'postgres+pg8000'
+	PYTHONGRID_DB_TYPE = 'postgres+psycopg2'
 	PYTHONGRID_DB_SOCKET = ''
 	PYTHONGRID_DB_CHARSET = 'utf-8'
 

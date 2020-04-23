@@ -402,7 +402,6 @@ class PythonGrid():
 
 		for col_name in field_names:
 			# check descriptive titles
-			col_name = str(col_name, 'utf-8')
 			if col_name in self.__col_titles:
 				col_names.append(self.__col_titles[col_name])
 			else:
@@ -451,7 +450,7 @@ class PythonGrid():
 		while i < self.__num_fields:
 			cols = OrderedDict()
 
-			col_name = str(field_names[i], 'utf-8')
+			col_name = field_names[i]
 			col_type = field_types[i]
 
 			cols['autoResizable'] = True
