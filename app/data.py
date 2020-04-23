@@ -65,7 +65,9 @@ class PythonGridDbData():
 					field_index = self.__field_names.index(key)
 					fm_type = self.__field_types[field_index]
 
-					if type(fm_type) == sqlalchemy.sql.sqltypes.INTEGER:
+					if type(fm_type) == sqlalchemy.sql.sqltypes.INTEGER or \
+						type(fm_type) == sqlalchemy.sql.sqltypes.NUMERIC or \
+						type(fm_type) == sqlalchemy.sql.sqltypes.Float:
 						sqlWhere += " AND " + key + " = " + value
 					else:
 						sqlWhere += " AND " + key + " LIKE '" + value + "%'"
