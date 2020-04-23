@@ -161,7 +161,7 @@ class PythonGridDbData():
 
 
 		with engine.connect() as conn:
-			self.__rs = conn.execute(SQL).fetchall() 
+			self.__rs = conn.execute(sqlalchemy.text(SQL)).fetchall() 
 
 		# total record count used for pagination (unfortunate performance penality).
 		self.__count = self.__count if self.__has_pagecount else 1000000000
