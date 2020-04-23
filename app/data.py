@@ -65,6 +65,7 @@ class PythonGridDbData():
 					field_index = self.__field_names.index(key)
 					fm_type = self.__field_types[field_index]
 
+					# only add single to non-numeric value
 					if type(fm_type) == sqlalchemy.sql.sqltypes.INTEGER or \
 						type(fm_type) == sqlalchemy.sql.sqltypes.NUMERIC or \
 						type(fm_type) == sqlalchemy.sql.sqltypes.Float:
