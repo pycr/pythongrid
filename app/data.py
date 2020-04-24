@@ -30,10 +30,6 @@ class PythonGridDbData():
 		self.__field_names = []
 		self.__field_types = []
 
-
-
-
-
 		engine = sqlalchemy.create_engine(app.config['PYTHONGRID_DB_TYPE']+'://'+app.config['PYTHONGRID_DB_USERNAME']+':'+app.config['PYTHONGRID_DB_PASSWORD']+'@'+app.config['PYTHONGRID_DB_HOSTNAME']+'/'+app.config['PYTHONGRID_DB_NAME']+'?unix_socket='+app.config['PYTHONGRID_DB_SOCKET']).connect()
 		md = sqlalchemy.MetaData()
 		
@@ -114,7 +110,7 @@ class PythonGridDbData():
 								(filter % rules[i]['data'])
 					else:
 						
-						sqlWhere += groupOp + sqlalchemy_utils.functions.quote(engine, rules[i]['field']) + \
+						sqlWhere += groupOp + " " + sqlalchemy_utils.functions.quote(engine, rules[i]['field']) + \
 								(filter % rules[i]['data'])
 
 		# remove leading sql AND/OR
