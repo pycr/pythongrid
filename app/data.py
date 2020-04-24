@@ -105,7 +105,16 @@ class PythonGridDbData():
 							filter = filter.replace("'", "")
 							filter = filter.replace("%s", "'%s'")
 
-					sqlWhere += groupOp + " " + sqlalchemy_utils.functions.quote(engine, rules[i]['field']) + \
+					if not type(fm_type) == sqlalchemy.sql.sqltypes.VARCHAR and \
+						not type(fm_type) == sqlalchemy.sql.sqltypes.CHAR and \
+						not type(fm_type) == sqlalchemy.sql.sqltypes.TEXT and \
+						not type(fm_type) == sqlalchemy.sql.sqltypes.String:
+
+						sqlWhere += groupOp + " CAST(" + sqlalchemy_utils.functions.quote(engine, rules[i]['field']) + " AS VARCHAR)" + \
+								(filter % rules[i]['data'])
+					else:
+						
+						sqlWhere += groupOp + sqlalchemy_utils.functions.quote(engine, rules[i]['field']) + \
 								(filter % rules[i]['data'])
 
 		# remove leading sql AND/OR
