@@ -36,6 +36,9 @@ class PythonGridDbData():
 		table = sqlalchemy.Table(self.__gridName, md, autoload=True, autoload_with=engine)
 		columns = table.c
 
+		# get table total row count (Not using Query API)
+		self.__count = engine.execute('SELECT COUNT(*) FROM '+ self.__gridName).scalar()
+
 		for column in columns:
 			self.__field_names.append(column.name)
 			self.__field_types.append(column.type)
