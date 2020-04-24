@@ -125,6 +125,12 @@ PYTHONGRID_DB_PASSWORD = 'root'
 PYTHONGRID_DB_TYPE = 'mysql+pymysql'
 ```
 
+For Postgres set database type to `postgres+psycopg2`
+
+```python
+PYTHONGRID_DB_TYPE = 'postgres+psycopg2'
+```
+
 ## Initialize Grid
 
 Flask uses *view functions* to handle for the application routes. View functions are mapped to one or more route URLs so that Flask knows what logic to execute when a client requests a given URL such as **"https://example.com/grid"**.
