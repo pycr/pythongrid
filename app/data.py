@@ -109,7 +109,9 @@ class PythonGridDbData():
 						not type(fm_type) == sqlalchemy.sql.sqltypes.TEXT and \
 						not type(fm_type) == sqlalchemy.sql.sqltypes.String:
 
-						sqlWhere += groupOp + " CAST(" + sqlalchemy_utils.functions.quote(engine, rules[i]['field']) + " AS VARCHAR)" + \
+						sqlStrType = 'CHAR' if app.config['PYTHONGRID_DB_TYPE'].find('mysql') != -1 else 'VARCHAR'
+
+						sqlWhere += groupOp + " CAST(" + sqlalchemy_utils.functions.quote(engine, rules[i]['field']) + " AS " + sqlStrType + ")" + \
 								(filter % rules[i]['data'])
 					else:
 						
