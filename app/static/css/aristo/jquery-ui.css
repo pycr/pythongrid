@@ -795,7 +795,7 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
 }
 
 
-/* phpgrid custom */
+/* custom */
 .ui-jqgrid .ui-jqgrid-htable th div{
     top:2px;
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);

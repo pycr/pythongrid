@@ -12,7 +12,7 @@ class PythonGridDbData():
 
     def __init__(self, sql):
 
-        self.__gridName        = request.args['gn'] if 'gn' in request.args.keys() else sys.exit('PHPGRID_ERROR: ULR parameter "gn" is not defined.');
+        self.__gridName        = request.args['gn'] if 'gn' in request.args.keys() else sys.exit('PYTHONGRID_ERROR: ULR parameter "gn" is not defined.');
         self.__data_type       = request.args['dt'] if 'dt' in request.args.keys() else 'json'
         self.__grid_sql        = sql
         self.__sql_filter      = '' #TODO filter from set_query_filter()
