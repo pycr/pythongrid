@@ -2,8 +2,9 @@ from flask import render_template, flash, redirect, url_for
 from app import app
 from app.grid import PythonGrid
 from app.data import PythonGridDbData
+from app.export import PythonGridDbExport
 
-@app.route('/')    
+@app.route('/')
 def index():
     grid = PythonGrid('SELECT * FROM orders', 'orderNumber', 'orders')
 
@@ -18,6 +19,7 @@ def index():
     grid.enable_pagecount(True)
     grid.set_col_align('status', 'center')
     grid.set_col_width('comments', 600)
+    grid.enable_export()
 
     return render_template('grid.html', title='demo', grid=grid)
 
@@ -26,4 +28,7 @@ def data():
     data = PythonGridDbData('SELECT * FROM orders')
     return data.getData()
 
-
+@app.route('/export', methods=['GET', 'POST'])
+def export():
+    exp = PythonGridDbExport('SELECT * FROM orders')
+    return exp.export()

@@ -26,8 +26,6 @@ class PythonGrid():
         self.jq_colModel = [] # [{"autoResizable":True,"name":"employeeNumber","index":"employeeNumber","hidden":False,"headerTitle":"employeeNumber","edittype":"text","editable":False,"editoptions":{"size":"30"},"editrules":{"edithidden":False,"required":False,"number":False}},{"autoResizable":True,"name":"firstName","index":"firstName","hidden":False,"headerTitle":"firstName","edittype":"text","editable":False,"editoptions":{"size":"30"},"editrules":{"edithidden":False,"required":False}},{"autoResizable":True,"name":"lastName","index":"lastName","hidden":False,"headerTitle":"lastName","edittype":"text","editable":False,"editoptions":{"size":"30"},"editrules":{"edithidden":False,"required":False}}]
         self.before_script_end = ''
 
-        self.export_type    = ''    # Export to EXCEL, HTML, PDF
-        self.export_url = ''
         self.pdf_logo = ''            # PDF logo property (PDF export and file must be jpg only)
         self.debug = False            # TODO - will be deprecated next version
         
@@ -172,6 +170,10 @@ class PythonGrid():
         self.__form_tooltip = []
         self.__iconSet = 'fontAwesome'
         self.__guiStyle = 'bootstrap' if self.__theme_name == 'bootstrap' else 'jQueryUI'
+
+        # ------- export ----------
+        self.export_type    = None    # Export to EXCEL, HTML, PDF
+        self.export_url = app.config['ABS_PATH'] + 'export?dt=' + self.__jq_datatype + '&gn=' + self.__jq_gridName 
 
         return
 
@@ -646,6 +648,14 @@ class PythonGrid():
                 position:'first' \n \
             }});\n"
 
+        # Excel export
+        if self.export_type is not None:
+            toolbar += 'jQuery("#' + self.__jq_gridName + '").jqGrid("navButtonAdd",' + self.__jq_pagerName + ',{caption:"",title:"' + self.export_type + '", \n \
+                        onClickButton:function(e){ \n \
+                                window.location= "' + self.export_url + '&export_type=' + self.export_type + '"; \n  \
+                        } \
+                    });' + "\n"
+        
         return toolbar
 
 
@@ -890,6 +900,11 @@ class PythonGrid():
 
     # set column frozen
     def set_col_frozen(self, col_name, value=True):
-        self.__col_frozen[col_name] = value; # doesn't really need a value
+        self.__col_frozen[col_name] = value # doesn't really need a value
+
+        return self
+
+    def enable_export(self, type='CSV'):
+        self.export_type = type
 
         return self
