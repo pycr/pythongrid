@@ -17,7 +17,8 @@ class PythonGridDbExport():
         self.__sql_filter   = '' #TODO  set_query_filter()
         self.__sql_fkey	    = '' #TODO  session->get(SESSION_KEY.'_'.gridName.'_sql_fkey');
 
-        self.__rs = None
+        self.__rs = None # grid header
+        self.__result = None # grid body
         self.__count = 0
         self.__total_pages = 0
         self.__num_fields = 0
@@ -172,13 +173,25 @@ class PythonGridDbExport():
 
 
         with engine.connect() as conn:
-            self.__rs = conn.execute(sqlalchemy.text(SQL)).fetchall()
+            self.__result = conn.execute(sqlalchemy.text(SQL)).fetchall()
             self.__count = len(self.__rs)
             self.__num_fields = len(self.__field_names)
 
 
     def export(self):
-        if self.__export_type.upper() == 'CSV':
-            x = "some data you want to return"
+        output = ''
 
-            return x, 200, {'Content-Type': 'text/csv; charset=utf-8', 'Content-Disposition': 'attachment; filename="report.csv"'}
+        if self.__export_type.upper() == 'CSV':
+            row_header = []
+
+            #header
+            for j in range(0,  self.__num_fields):
+                col_name = self.__field_names[j]
+                row_header.append(col_name)
+            output = ','.join([str(i) for i in row_header]) + '\n'
+
+            #body
+            for row in self.__result:
+                output += ','.join([str(i) for i in row]) + '\n'
+
+        return output, 200, {'Content-Type': 'text/csv; charset=utf-8', 'Pragma':'no-cache', 'Expires':'0', 'Content-Disposition': 'attachment; filename="'+ self.__gridName +'_export.csv"'}
