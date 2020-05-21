@@ -34,6 +34,7 @@ Within the download you will see something like this:
 │   ├── __init__.py
 │   ├── data.py
 │   ├── grid.py
+│   ├── export.py
 │   ├── routes.py
 │   ├── static
 │   └── templates
@@ -191,5 +192,6 @@ The pythonGrid supports
 * Datagrid dimension
 * Column width
 * Column text alignment
+* CSV export
 
 **[Run Demo](https://demo.pythongrid.com/)**
