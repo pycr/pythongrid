@@ -45,6 +45,7 @@ Within the download you will see something like this:
 ├── sample
 │   ├── sampledb_postgres.sql
 │   ├── sampledb_mysql.sql
+│   └── sampledb_sqlite.sql
 ├── config.py
 ├── index.py
 └── requirements.txt
@@ -60,9 +61,9 @@ pythonGrid current has two main files in `grid.py` and `data.py` in **app** fold
 
 ## Creating the Database
 
-Find the sample database in folder [**sampledb**](https://github.com/pycr/pythongrid/blob/master/app/sample/). Using your favorite MySQL os Postgres client (more database supports are coming).
+Find the sample database in folder [**sampledb**](https://github.com/pycr/pythongrid/blob/master/app/sample/). Using your favorite SQLITE, MySQL or Postgres client (more database supports are coming).
 
-1. Create a new database named `sampledb`
+1. Create a new database named `sampledb` or `pygrid.db` file for SQLITE to put in the project root (not app)
 2. Run the sample sql script.
 
 ## Install Python
@@ -130,6 +131,13 @@ For Postgres set database type to `postgres+psycopg2`
 
 ```python
 PYTHONGRID_DB_TYPE = 'postgres+psycopg2'
+```
+
+For SQLITE
+```python
+PYTONGRID_SQLALCHEMY = 'sqlite:///pygrid.db'
+PYTHONGRID_DB_CHARSET = 'utf-8'
+PYTHONGRID_DB_TYPE = 'sqlite'
 ```
 
 ## Initialize Grid
