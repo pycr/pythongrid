@@ -184,8 +184,11 @@ class PythonGrid():
 
 
     def __del__(self):
+        pass
+        """
         if self.db.open:
             self.db.close()
+        """
 
     
     def display_script_includeonce(self):
@@ -392,6 +395,7 @@ class PythonGrid():
 
             self.set_colNames(result, field_names)            
             self.set_colModels(result, result.cursor.description)
+            result.close()
 
     def set_colNames(self, result, field_names):
 
