@@ -63,7 +63,7 @@ pythonGrid current has two main files in `grid.py` and `data.py` in **app** fold
 
 Find the sample database in folder [**sampledb**](https://github.com/pycr/pythongrid/blob/master/app/sample/). Using your favorite SQLITE, MySQL or Postgres client (more database supports are coming).
 
-1. Create a new database named `sampledb` or `pygrid.db` file for SQLITE to put in the project root (not app)
+1. Create a new database named `sampledb` (`pygrid.db` file for SQLITE to put in the project root (not app))
 2. Run the sample sql script.
 
 ## Install Python
