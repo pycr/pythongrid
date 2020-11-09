@@ -2,6 +2,7 @@ from sqlalchemy import create_engine
 import json, string, re
 from app import app
 from collections import OrderedDict
+import os
 
 
 class PythonGrid():
@@ -29,8 +30,12 @@ class PythonGrid():
         self.pdf_logo = ''            # PDF logo property (PDF export and file must be jpg only)
         self.debug = False            # TODO - will be deprecated next version
         
-        self.db = create_engine(app.config['PYTHONGRID_DB_TYPE']+'://'+app.config['PYTHONGRID_DB_USERNAME']+':'+app.config['PYTHONGRID_DB_PASSWORD']+'@'+app.config['PYTHONGRID_DB_HOSTNAME']+'/'+app.config['PYTHONGRID_DB_NAME']+'?unix_socket='+app.config['PYTHONGRID_DB_SOCKET'], encoding=app.config['PYTHONGRID_DB_CHARSET'])
-        
+        if app.config['PYTHONGRID_DB_TYPE'] in ("mysql+pymysql","postgres+psycopg2"):
+            self.db = create_engine(app.config['PYTHONGRID_DB_TYPE']+'://'+app.config['PYTHONGRID_DB_USERNAME']+':'+app.config['PYTHONGRID_DB_PASSWORD']+'@'+app.config['PYTHONGRID_DB_HOSTNAME']+'/'+app.config['PYTHONGRID_DB_NAME']+'?unix_socket='+app.config['PYTHONGRID_DB_SOCKET']).connect()
+        elif app.config['PYTHONGRID_DB_TYPE'] in ("sqlite"):
+            self.db = create_engine(app.config['PYTONGRID_SQLALCHEMY'])
+            
+
         self.db_connection = []
         self.obj_subgrid = []        # subjgrid object
         self.obj_md = []             # master detail object
@@ -296,14 +301,14 @@ class PythonGrid():
                 props += """grid.jqGrid("editRow", id, {
                         focusField: function(){ return((e) ? e.target : null) },
                         keys:true,
-                        oneditfunc:function(){""" + "\n";
+                        oneditfunc:function(){""" + "\n"
 
                 if not self.__col_autocomplete:
                     for col_name in self.__col_autocomplete:
                         props += '$("#' + self.__jq_gridName + ' tr#"+id+" td select[id="+id+"_' + col_name + ']").select2({width:"100%",minimumInputLength:0});' + "\n"
                         # props += $this->get_nested_dropdown_js($col_name);
 
-                for key, value in enumerate(self.__col_wysiwyg):
+                for key in enumerate(self.__col_wysiwyg):
                     props += '$("#"+id+"_' + key + '").wysiwyg({' \
                             """plugins: {
                                 autoload: true,
@@ -376,27 +381,17 @@ class PythonGrid():
 
     def prepare_grid(self):
 
-        connection = self.db.raw_connection()
+        with self.db.connect() as connection:
+            result = connection.execute(self.__sql)
 
-        try:
-            with connection.cursor() as cursor:
-                cursor.execute(self.__sql)
-                result = cursor.fetchall()
+            field_names = [i[0] for i in result.cursor.description]
 
-                field_names = [i[0] for i in cursor.description]
-
-                self.__num_fields = len(cursor.description)    
-                self.__num_rows = 0
+            self.__num_fields = len(result.cursor.description)    
+            self.__num_rows = 0
 
 
-                self.set_colNames(result, field_names)            
-                self.set_colModels(result, cursor.description)            
-                
-        finally:
-            pass #connection.close()
-
-        return
-
+            self.set_colNames(result, field_names)            
+            self.set_colModels(result, result.cursor.description)
 
     def set_colNames(self, result, field_names):
 
@@ -418,7 +413,7 @@ class PythonGrid():
     def set_colModels(self, result, meta_data):
 
         self.jq_colModel = [] # must reset each time, Flask keeps the list in memory somehow
-        connection = self.db
+        # connection = self.db
         colModel = []
 
         field_names = [i[0] for i in meta_data]
@@ -530,7 +525,7 @@ class PythonGrid():
     def display_script_begin(self):
         script_begin = ''
         
-        script_begin += '<script type="text/javascript">' + "\n";
+        script_begin += '<script type="text/javascript">' + "\n"
         script_begin += '//<![CDATA[' + "\n"
         script_begin += 'var lastSel;' + "\n"       
         script_begin += 'var pg_' + self.__jq_gridName + ';' + "\n"
@@ -618,7 +613,11 @@ class PythonGrid():
 
         # resizable grid (beta - jQuery UI)
         if self.__jqu_resize['is_resizable']:
-            toolbar += 'jQuery("#' + self.__jq_gridName + '").jqGrid("gridResize",{minWidth:'. self.__jqu_resize['min_width'] + ',minHeight:' + self.__jqu_resize['min_height'] + '});' + "\n"
+            toolbar = toolbar + 'jQuery("#' + \
+                    self.__jq_gridName + \
+                    '").jqGrid("gridResize",{minWidth:' + \
+                    self.__jqu_resize['min_width'] + \
+                    ',minHeight:' + self.__jqu_resize['min_height'] + '});' + "\n"
 
         # inline search
         if self.__has_tbarsearch:
@@ -702,7 +701,7 @@ class PythonGrid():
 
             script_end += 'pg_' + self.__jq_gridName + '.jqGrid("destroyFilterToolbar");'
             script_end += 'pg_' + self.__jq_gridName + '.jqGrid("filterToolbar",{stringResult: true, searchOnEnter: true, defaultSearch: "cn"});' + "\n"
-            script_end += 'pg_' + self.__jq_gridName + '[0].triggerToolbar();' + "\n";
+            script_end += 'pg_' + self.__jq_gridName + '[0].triggerToolbar();' + "\n"
 
 
         script_end += "\n" + '}); // jQuery(document).ready(function($){ ' + "\n"
@@ -745,10 +744,10 @@ class PythonGrid():
         disp += self.display_properties_end()
         #disp += display_extended_properties();
         disp += self.display_toolbar()
-        disp += self.display_before_script_end();
-        disp += self.display_script_end();
+        disp += self.display_before_script_end()
+        disp += self.display_script_end()
 
-        disp += self.__display_container();
+        disp += self.__display_container()
 
         disp += self.display_events()
         
@@ -763,7 +762,7 @@ class PythonGrid():
 
     def set_caption(self, capition):
         if capition == '':
-            caption = '&nbsp'
+            capition = '&nbsp'
 
         self.__jq_caption = capition
 
@@ -785,7 +784,7 @@ class PythonGrid():
                 self.__col_hiddens[col]['edithidden'] = edithidden
 
         else:
-            col_names = re.split("/[\s]*[,][\s]*/", col_name)
+            col_names = re.split(r"/[\s]*[,][\s]*/", col_name)
             for col in col_names:
                 self.__col_hiddens[col] = OrderedDict()
                 self.__col_hiddens[col]['edithidden'] = edithidden
@@ -816,13 +815,13 @@ class PythonGrid():
         if isinstance(arr, list):
             self.__col_readonly = self.__col_readonly + arr
         else:
-            self.__col_readonly = self.__col_readonly + re.split("/[\s]*[,][\s]*/", arr)
+            self.__col_readonly = self.__col_readonly + re.split(r"/[\s]*[,][\s]*/", arr)
 
         return self
 
     # TODO - not finished, can't test without finishing EDIT first
     def set_col_required(self, arr):
-        self.__col_required = re.split("/[\s]*[,][\s]*/", arr)
+        self.__col_required = re.split(r"/[\s]*[,][\s]*/", arr)
 
         '''for col_name in self.__col_required:
             $this->cust_col_properties[$col_name] = array("formoptions"=>
@@ -858,12 +857,12 @@ class PythonGrid():
         return self
 
 
-    '''
+    """
     * Enable integrated toolbar search
     * @param  boolean $can_search      Enable integrated toolbar search
     * @param  Array $auto_filter     Excel-like auto filter
     * @return grid object              
-    '''
+    """
     def enable_search(self, can_search, auto_filters = []):
         self.__has_tbarsearch   = can_search
         self.__auto_filters     = auto_filters

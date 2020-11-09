@@ -7,12 +7,13 @@ from flask import request, session
 from pprint import pprint
 import logging
 from collections import OrderedDict
+from flask import current_app as app
 
 class PythonGridDbData():
 
     def __init__(self, sql):
 
-        self.__gridName        = request.args['gn'] if 'gn' in request.args.keys() else sys.exit('PYTHONGRID_ERROR: ULR parameter "gn" is not defined.');
+        self.__gridName        = request.args['gn'] if 'gn' in request.args.keys() else sys.exit('PYTHONGRID_ERROR: ULR parameter "gn" is not defined.')
         self.__data_type       = request.args['dt'] if 'dt' in request.args.keys() else 'json'
         self.__grid_sql        = sql
         self.__sql_filter      = '' #TODO filter from set_query_filter()
@@ -29,8 +30,12 @@ class PythonGridDbData():
         self.__num_fields = 0
         self.__field_names = []
         self.__field_types = []
-
-        engine = sqlalchemy.create_engine(app.config['PYTHONGRID_DB_TYPE']+'://'+app.config['PYTHONGRID_DB_USERNAME']+':'+app.config['PYTHONGRID_DB_PASSWORD']+'@'+app.config['PYTHONGRID_DB_HOSTNAME']+'/'+app.config['PYTHONGRID_DB_NAME']+'?unix_socket='+app.config['PYTHONGRID_DB_SOCKET']).connect()
+        
+        if app.config['PYTHONGRID_DB_TYPE'] in ("mysql+pymysql","postgres+psycopg2"):
+            engine = sqlalchemy.create_engine(app.config['PYTHONGRID_DB_TYPE']+'://'+app.config['PYTHONGRID_DB_USERNAME']+':'+app.config['PYTHONGRID_DB_PASSWORD']+'@'+app.config['PYTHONGRID_DB_HOSTNAME']+'/'+app.config['PYTHONGRID_DB_NAME']+'?unix_socket='+app.config['PYTHONGRID_DB_SOCKET']).connect()
+        elif app.config['PYTHONGRID_DB_TYPE'] in ("sqlite"):
+            engine = sqlalchemy.create_engine(app.config['PYTONGRID_SQLALCHEMY'])
+        
         md = sqlalchemy.MetaData()
         
         table = sqlalchemy.Table(self.__gridName, md, autoload=True, autoload_with=engine)
@@ -109,7 +114,7 @@ class PythonGridDbData():
                         not type(fm_type) == sqlalchemy.sql.sqltypes.TEXT and \
                         not type(fm_type) == sqlalchemy.sql.sqltypes.String:
 
-                        sqlStrType = 'CHAR' if app.config['PYTHONGRID_DB_TYPE'].find('mysql') != -1 else 'VARCHAR'
+                        sqlStrType = 'CHAR' if app.config['PYTHONGRID_DB_TYPE'] in ('mysql+pymysql', 'sqlite') else 'VARCHAR'
 
                         sqlWhere += groupOp + " CAST(" + sqlalchemy_utils.functions.quote(engine, rules[i]['field']) + " AS " + sqlStrType + ")" + \
                                 (filter % rules[i]['data'])
@@ -147,12 +152,12 @@ class PythonGridDbData():
 
         # ****************** prepare the final query ***********************
         # Store GROUP BY Position 
-        groupBy_Position = sql.upper().find("GROUP BY")
+        # groupBy_Position = sql.upper().find("GROUP BY")
 
         if self.__sql_filter != '' and searchOn :
             SQL = self.__grid_sql + ' WHERE ' + self.__sql_filter + ' AND (' + sqlWhere + ')' + sqlOrderBy
         elif self.__sql_filter != '' and not searchOn :
-            SQL = self.__grid_sql + ' WHERE ' + self.sql_filter + sqlOrderBy
+            SQL = self.__grid_sql + ' WHERE ' + self.__sql_filter + sqlOrderBy
         elif self.__sql_filter == '' and searchOn :
             SQL = self.__grid_sql + ' WHERE ' + sqlWhere + sqlOrderBy
         else:
