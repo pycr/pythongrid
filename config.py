@@ -16,7 +16,8 @@ class Config(object):
     PYTHONGRID_DB_CHARSET = 'utf-8'
     """
     
-    # mysql 
+    # mysql
+    """
     PYTHONGRID_DB_HOSTNAME = ''
     PYTHONGRID_DB_NAME = 'sampledb'
     PYTHONGRID_DB_USERNAME = 'root'
@@ -24,3 +25,9 @@ class Config(object):
     PYTHONGRID_DB_TYPE = 'mysql+pymysql'
     PYTHONGRID_DB_SOCKET = '/Applications/MAMP/tmp/mysql/mysql.sock'
     PYTHONGRID_DB_CHARSET = 'utf-8'
+    """
+    
+    # sqlite
+    PYTONGRID_SQLALCHEMY = 'sqlite:///pygrid.db'
+    PYTHONGRID_DB_CHARSET = 'utf-8'
+    PYTHONGRID_DB_TYPE = 'sqlite'
