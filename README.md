@@ -8,7 +8,7 @@ pythonGrid is an easy way to create a fully working datagrid for Python web fram
 
 ## Requirements
 
-* Python 3.6 (3.7, 3.8 support coming up)
+* Python 3.6+
 * Flask (Django, Web2Py, CherryPy and other major web frameworks support are coming)
 * SQLAlchemy
 
