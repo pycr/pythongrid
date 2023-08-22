@@ -2,6 +2,7 @@ from flask import Flask
 from flask_session import Session
 import logging
 from config import Config
+from flask_debugtoolbar import DebugToolbarExtension
 
 app = Flask(__name__)
 
@@ -13,6 +14,7 @@ Session(app)
 
 app.debug = True
 app.config.from_object(Config)
+toolbar = DebugToolbarExtension(app)
 
 # logging in terminal display (no log file)
 logging.basicConfig(level=logging.DEBUG)
