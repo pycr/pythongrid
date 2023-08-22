@@ -1,3 +1,5 @@
 __pycache__
 venv
 /.vscode/settings.json
+/flask_session
+.DS_Store
