@@ -27,3 +27,5 @@ class Config(object):
 
     # constant
     GRID_SESSION_KEY = '_oPYTHONGRID'
+    JQGRID_ROWID_KEY = '_rowid'
+    PK_DELIMITER = '---' # must be 3 characters
