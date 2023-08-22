@@ -2,6 +2,9 @@ from sqlalchemy import create_engine
 import json, string, re
 from app import app
 from collections import OrderedDict
+from flask import Flask, redirect, request, session
+from flask_session import Session
+import pickle
 
 
 class PythonGrid():
@@ -390,8 +393,17 @@ class PythonGrid():
 
 
                 self.set_colNames(result, field_names)            
-                self.set_colModels(result, cursor.description)            
-                
+                self.set_colModels(result, cursor.description)
+
+                Session(app)
+                session[app.config["GRID_SESSION_KEY"] + "_" + self.__jq_gridName + "_sql"] = self.__sql
+                session[app.config["GRID_SESSION_KEY"] + "_" + self.__jq_gridName + "_sql_key"] = self.__sql_table
+                session[app.config["GRID_SESSION_KEY"] + "_" + self.__jq_gridName + "_sql_key"] = pickle.dumps(self.__sql_key)
+                session[app.config["GRID_SESSION_KEY"] + "_" + self.__jq_gridName + "_sql_key"] = pickle.dumps(self.__col_titles)
+                session[app.config["GRID_SESSION_KEY"] + "_" + self.__jq_gridName + "_sql_key"] = pickle.dumps(self.__col_hiddens)
+                session[app.config["GRID_SESSION_KEY"] + "_" + self.__jq_gridName + "_sql_key"] = pickle.dumps(self.__col_readonly)
+                session[app.config["GRID_SESSION_KEY"] + "_" + self.__jq_gridName + "_sql_key"] = pickle.dumps(self.__col_edittypes)
+
         finally:
             pass #connection.close()
 

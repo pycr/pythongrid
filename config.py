@@ -24,3 +24,6 @@ class Config(object):
     PYTHONGRID_DB_TYPE = 'mysql+pymysql'
     PYTHONGRID_DB_SOCKET = '/Applications/MAMP/tmp/mysql/mysql.sock'
     PYTHONGRID_DB_CHARSET = 'utf-8'
+
+    # constant
+    GRID_SESSION_KEY = '_oPYTHONGRID'
