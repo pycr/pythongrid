@@ -405,7 +405,8 @@ class PythonGrid():
                 session[app.config["GRID_SESSION_KEY"] + "_" + self.__jq_gridName + "_sql_key"] = pickle.dumps(self.__col_edittypes)
 
         finally:
-            pass #connection.close()
+            connection.close()
+            self.db.dispose()
 
         return
 
