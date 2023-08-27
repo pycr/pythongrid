@@ -4,8 +4,6 @@ from app import app
 from collections import OrderedDict
 from flask import Flask, redirect, request, session
 from flask_session import Session
-import pickle
-
 
 class PythonGrid():
 
@@ -17,7 +15,6 @@ class PythonGrid():
     has_rating = False
     
     def __init__(self, sql, sql_key='', sql_table='', db_connection=[]):
-
 
         self.__jq_gridName = 'list1' if sql_table == '' else sql_table.replace('.', '_')
         self.__sql = sql
@@ -287,84 +284,10 @@ class PythonGrid():
 
 
         elif self.__edit_mode == 'INLINE':
-            props += """onSelectRow: function(id, status, e){
-                var grid = $(this);
-                    if(id && id!==lastSel){
-                        grid.restoreRow(lastSel);
-                        lastSel=id;
-                    }""" + "\n"
-
-            if self.__edit_options.rfind('U') != -1:
-
-                props += """grid.jqGrid("editRow", id, {
-                        focusField: function(){ return((e) ? e.target : null) },
-                        keys:true,
-                        oneditfunc:function(){""" + "\n";
-
-                if not self.__col_autocomplete:
-                    for col_name in self.__col_autocomplete:
-                        props += '$("#' + self.__jq_gridName + ' tr#"+id+" td select[id="+id+"_' + col_name + ']").select2({width:"100%",minimumInputLength:0});' + "\n"
-                        # props += $this->get_nested_dropdown_js($col_name);
-
-                for key, value in enumerate(self.__col_wysiwyg):
-                    props += '$("#"+id+"_' + key + '").wysiwyg({' \
-                            """plugins: {
-                                autoload: true,
-                                i18n: { lang: "en" },
-                                rmFormat: { rmMsWordMarkup: true }
-                            },
-                            autoSave:true,
-                            controls: {
-                                html: {visible: true},
-                                colorpicker: {
-                                    groupIndex: 11,
-                                    visible: true,
-                                    css: {
-                                        "color": function (cssValue, Wysiwyg) {
-                                            var document = Wysiwyg.innerDocument(),
-                                                defaultTextareaColor = $(document.body).css("color");
-
-                                            if (cssValue !== defaultTextareaColor) {
-                                                return true;
-                                            }
-
-                                            return false;
-                                        }
-                                    },
-                                    exec: function() {
-                                        if ($.wysiwyg.controls.colorpicker) {
-                                            $.wysiwyg.controls.colorpicker.init(this);
-                                        }
-                                    },
-                                    tooltip: "Colorpicker"
-                                }
-                            }
-
-                    });"""
-
-
-                props += '},' + "\n" # oneditfunc,
-                props += """aftersavefunc:function(id, result){
-                                setTimeout(function(){
-                                    grid.focus();  // set focus after save
-                                    // displayCrudServerErr(result);
-                                },100);
-
-                        },""" + "\n"
-                props += 'errorfunc:function(){}' + "\n" # errorfunc - only called when status code is not 200.
-                props += '});' + "\n" # grid.jqGrid("editRow"...
-                
-                # do not focus selected cell when keybaord nav is enabled 
-                if not self.__kb_nav:
-                    props += 'if(e){ setTimeout(function(){$("input, select, textarea",e.target).focus();}, 0) }' + "\n"
-
-
-            props += '},// onSelectRow' + "\n"
-            props += 'editurl:"' + self.__jq_editurl + '"' + ",\n"
-
+            pass
+        
         elif self.__edit_mode == 'FORM':
-            props += ''
-
+            pass
         
         props += self.cust_prop_jsonstr + "\n"
 
@@ -397,12 +320,12 @@ class PythonGrid():
 
                 Session(app)
                 session[app.config["GRID_SESSION_KEY"] + "_" + self.__jq_gridName + "_sql"] = self.__sql
-                session[app.config["GRID_SESSION_KEY"] + "_" + self.__jq_gridName + "_sql_key"] = self.__sql_table
-                session[app.config["GRID_SESSION_KEY"] + "_" + self.__jq_gridName + "_sql_key"] = pickle.dumps(self.__sql_key)
-                session[app.config["GRID_SESSION_KEY"] + "_" + self.__jq_gridName + "_sql_key"] = pickle.dumps(self.__col_titles)
-                session[app.config["GRID_SESSION_KEY"] + "_" + self.__jq_gridName + "_sql_key"] = pickle.dumps(self.__col_hiddens)
-                session[app.config["GRID_SESSION_KEY"] + "_" + self.__jq_gridName + "_sql_key"] = pickle.dumps(self.__col_readonly)
-                session[app.config["GRID_SESSION_KEY"] + "_" + self.__jq_gridName + "_sql_key"] = pickle.dumps(self.__col_edittypes)
+                session[app.config["GRID_SESSION_KEY"] + "_" + self.__jq_gridName + "_sql_table"] = self.__sql_table
+                session[app.config["GRID_SESSION_KEY"] + "_" + self.__jq_gridName + "_sql_key"] = json.dumps(self.__sql_key)
+                session[app.config["GRID_SESSION_KEY"] + "_" + self.__jq_gridName + "_col_titles"] = json.dumps(self.__col_titles)
+                session[app.config["GRID_SESSION_KEY"] + "_" + self.__jq_gridName + "_col_hiddens"] = json.dumps(self.__col_hiddens)
+                session[app.config["GRID_SESSION_KEY"] + "_" + self.__jq_gridName + "_col_readyonly"] = json.dumps(self.__col_readonly)
+                session[app.config["GRID_SESSION_KEY"] + "_" + self.__jq_gridName + "_col_edittypes"] = json.dumps(self.__col_edittypes)
 
         finally:
             connection.close()
@@ -623,6 +546,7 @@ class PythonGrid():
 
         if self.__edit_mode == 'FORM' or self.__edit_mode == 'INLINE':
             pass
+
         elif self.__edit_mode == 'NONE':
             exp_type = 'true' if self.export_type is not None else 'false'
 
