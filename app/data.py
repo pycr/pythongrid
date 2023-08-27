@@ -14,7 +14,8 @@ class PythonGridDbData():
 
         self.__gridName        = request.args['gn'] if 'gn' in request.args.keys() else sys.exit('PYTHONGRID_ERROR: ULR parameter "gn" is not defined.')
         self.__data_type       = request.args['dt'] if 'dt' in request.args.keys() else 'json'
-        self.__grid_sql        = sql
+        self.__grid_sql        = session[app.config["GRID_SESSION_KEY"] + "_" + self.__gridName + "_sql"]
+        self.__sql_key         = json.loads(session[app.config["GRID_SESSION_KEY"] + "_" + self.__gridName + "_sql_key"])
         self.__sql_filter      = '' #TODO filter from set_query_filter()
         self.__has_pagecount = True
 
@@ -220,12 +221,10 @@ class PythonGridDbData():
 
             i += 1
 
-
         data['rows'].extend(rows)
 
         # print(json.dumps(data)) #app.logger.info(data)    
 
         # should return the format like this 
         # #'{"page":' + str(self.__page) + ',"total":' + str(self.__total_pages) + ',"records":' + str(self.__count) + ',"rows":[{"id":"1002","cell":["1002","Diane","Murphy"]},{"id":"1056","cell":["1056","Mary","Patterson"]},{"id":"1076","cell":["1076","Jeff","Firrelli"]},{"id":"1088","cell":["1088","William","Patterson"]},{"id":"1102","cell":["1102","Gerard","Bondur"]},{"id":"1165","cell":["1165","Leslie","Jennings"]},{"id":"1166","cell":["1166","Leslie","Thompson"]},{"id":"1188","cell":["1188","Julie","Firrelli"]},{"id":"1216","cell":["1216","Steve","Patterson"]},{"id":"1286","cell":["1286","Foon Yue","Tseng"]},{"id":"1323","cell":["1323","George","Vanauf"]},{"id":"1337","cell":["1337","Loui","Bondur"]},{"id":"1370","cell":["1370","Gerard","Hernandez"]},{"id":"1401","cell":["1401","Pamela","Castillo"]},{"id":"1501","cell":["1501","Larry","Bott"]},{"id":"1504","cell":["1504","Barry","Jones"]},{"id":"1611","cell":["1611","Andy","Fixter"]},{"id":"1612","cell":["1612","Peter","Marsh"]},{"id":"1619","cell":["1619","Tom","King"]},{"id":"1621","cell":["1621","Mami","Nishi"]},{"id":"1625","cell":["1625","Yoshimi","Kato"]},{"id":"1702","cell":["1702","Martin","Gerard"]}]}'
-        return json.dumps(data, default=str) 
-
+        return json.dumps(data, default=str)
