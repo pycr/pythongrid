@@ -18,7 +18,7 @@ class PythonGrid():
 
         self.__jq_gridName = 'list1' if sql_table == '' else sql_table.replace('.', '_')
         self.__sql = sql
-        self.__sql_key = sql_key if isinstance(sql_key, list) else [sql_key]
+        self.__sql_key = sql_table if isinstance(sql_key, list) else [sql_key]
         self.__sql_table = sql_table
         self.__jq_pagerName = '"#' + self.__jq_gridName + '_pager1"'  # Notice the double quote
         self.__jq_caption = sql_table + '&nbsp'
@@ -844,5 +844,11 @@ class PythonGrid():
 
     def enable_export(self, type='CSV'):
         self.export_type = type
+
+        return self
+    
+    # set edit url (edit.py)
+    def set_jq_editurl(self, url):
+        self.__jq_editurl = url # ABS_PATH .'/'. $url .'?dt='. $this->jq_datatype .'&gn='.$this->jq_gridName;
 
         return self
