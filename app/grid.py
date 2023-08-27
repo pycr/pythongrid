@@ -218,6 +218,7 @@ class PythonGrid():
 
         props += 'datatype:"' + self.__jq_datatype + "\",\n"
         props += 'mtype:"' + self.__jq_mtype + "\",\n"
+        props += 'prmNames:{id:"' + app.config['JQGRID_ROWID_KEY'] + '"}' + ",\n"
         props += 'colNames:' + json.dumps(self.__jq_colNames) + ",\n"
         props += 'colModel:' + json.dumps(self.jq_colModel) + ",\n"
         props += 'pager: ' + self.__jq_pagerName + ",\n"
