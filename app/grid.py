@@ -282,136 +282,6 @@ class PythonGrid():
             props += 'cellsubmit:"remote",' + "\n"
             props += 'cellurl:"' + app.config['ABS_PATH'] + 'edit?dt=json&gn=' + self.__jq_gridName  + '",' + "\n"
 
-
-        elif self.__edit_mode == 'INLINE':
-            props += """onSelectRow: function(id, status, e){
-                var grid = $(this);
-                    if(id && id!==lastSel){
-                        grid.restoreRow(lastSel);
-                        lastSel=id;
-                    }""" + "\n"
-
-            if self.__edit_options.rfind('U') != -1:
-
-                props += """grid.jqGrid("editRow", id, {
-                        focusField: function(){ return((e) ? e.target : null) },
-                        keys:true,
-                        oneditfunc:function(){""" + "\n"
-
-                if not self.__col_autocomplete:
-                    for col_name in self.__col_autocomplete:
-                        props += '$("#' + self.__jq_gridName + ' tr#"+id+" td select[id="+id+"_' + col_name + ']").select2({width:"100%",minimumInputLength:0});' + "\n"
-                        # props += $this->get_nested_dropdown_js($col_name);
-
-                for key, value in enumerate(self.__col_wysiwyg):
-                    props += '$("#"+id+"_' + key + '").wysiwyg({' \
-                            """plugins: {
-                                autoload: true,
-                                i18n: { lang: "en" },
-                                rmFormat: { rmMsWordMarkup: true }
-                            },
-                            autoSave:true,
-                            controls: {
-                                html: {visible: true},
-                                colorpicker: {
-                                    groupIndex: 11,
-                                    visible: true,
-                                    css: {
-                                        "color": function (cssValue, Wysiwyg) {
-                                            var document = Wysiwyg.innerDocument(),
-                                                defaultTextareaColor = $(document.body).css("color");
-
-                                            if (cssValue !== defaultTextareaColor) {
-                                                return true;
-                                            }
-
-                                            return false;
-                                        }
-                                    },
-                                    exec: function() {
-                                        if ($.wysiwyg.controls.colorpicker) {
-                                            $.wysiwyg.controls.colorpicker.init(this);
-                                        }
-                                    },
-                                    tooltip: "Colorpicker"
-                                }
-                            }
-
-                    });"""
-
-
-                props += '},' + "\n" # oneditfunc,
-                props += """aftersavefunc:function(id, result){
-                                setTimeout(function(){
-                                    grid.focus();  // set focus after save
-                                    // displayCrudServerErr(result);
-                                },100);
-
-                        },""" + "\n"
-                props += 'errorfunc:function(){}' + "\n" # errorfunc - only called when status code is not 200.
-                props += '});' + "\n" # grid.jqGrid("editRow"...
-                
-                # do not focus selected cell when keybaord nav is enabled 
-                if not self.__kb_nav:
-                    props += 'if(e){ setTimeout(function(){$("input, select, textarea",e.target).focus();}, 0) }' + "\n"
-
-
-            props += '},// onSelectRow' + "\n"
-            props += 'editurl:"' + self.__jq_editurl + '"' + ",\n"
-
-        elif self.__edit_mode == 'FORM':
-            props += 'editurl:"' + self.__jq_editurl + '"' + ",\n"
-            props += """ondblClickRow: function(){
-                            var row_id = $(this).getGridParam("selrow");""" + "\n"
-
-            editEvtHanlder = ''
-            if self.__edit_options.rfind('U') != -1:
-                props += '$(this).jqGrid("editGridRow", row_id, { ' + "\n"
-                
-                # ---  afterShowForm:function(form_id){} ---
-                editEvtHanlder += """
-                                        // --------- edit options ---------
-                                        afterShowForm:function(form_id){
-                
-                                        // always position the dialog in the middle of window
-                                        form_id.closest(".ui-jqdialog").position({
-                                            my: "center",
-                                            at: "center",
-                                            of: window
-                                        });""" + "\n"
-                        
-                # autocomplete control placeholder
-                # file upload control placeholder
-                # wysiwyg control placeholder
-
-                editEvtHanlder += """
-                                    }, // afterShowForm 
-                                   """ + "\n"
-                
-                editEvtHanlder += f"""
-                                    jqModal:true,
-                                    checkOnUpdate:false,
-                                    savekey: [true,13],
-                                    width: {int(self.__form_width)},
-                                    height:"{self.__form_height}",
-                                    navkeys: [false,38,40],
-                                    checkOnSubmit: false,
-                                    reloadAfterSubmit:false,
-                                    resize:true,
-                                    closeOnEscape:true,
-                                    closeAfterEdit:true,
-                                    bottominfo:"* required",
-                                    viewPagerButtons:true
-                                    """ + "\n"
-                
-                props += editEvtHanlder
-
-                self.__script_editEvtHandler = editEvtHanlder
-
-                props += '            }); // editGridRow' + "\n"
-
-            props += '        }, // ondblClickRow' + "\n"
-
         props += self.cust_prop_jsonstr + "\n"
 
         if not self.__cust_grid_properties:
@@ -533,12 +403,8 @@ class PythonGrid():
                 cols['align'] = self.__col_aligns[col_name]['align']
 
 
-            if self.__edit_mode == 'CELL' or self.__edit_mode == 'INLINE':
+            if self.__edit_mode == 'CELL':
                 cols['editable'] = False if col_name in self.__col_readonly else True
-            elif self.__edit_mode == 'FORM':
-                cols['editable'] = True
-            else:
-                cols['editable'] = False
 
             # --------------- editoptions ----------------
             # set default text input width, the default edit type is text
@@ -667,64 +533,7 @@ class PythonGrid():
     def display_toolbar(self):
         toolbar = ''
 
-        if self.__edit_mode == 'FORM' or self.__edit_mode == 'INLINE':
-            toolbar += 'jQuery("#' + self.__jq_gridName + '").jqGrid("navGrid", ' + self.__jq_pagerName + ","
-
-            toolbar += f"""
-                            {{
-                                edit:{str(self.__edit_options.find('U') != -1 and self.__edit_mode != 'INLINE').lower()},
-                                add:{str(self.__edit_options.find('C') != -1).lower()},
-                                del:{str(self.__edit_options.find('D') != -1).lower()},
-                                view:{str(self.__edit_options.find('R') != -1 and self.__edit_mode != 'INLINE').lower()},
-                                cloneToTop:true,
-                                search:false,
-                                excel:{str(self.export_type is not None).lower()}
-                            }},""" + "\n"
-            
-            toolbar += """
-                            { 
-                                // --------- edit options --------- 
-                            }, 
-                        """ + "\n"
-            
-            toolbar += f"""
-                            {{            
-                                // --------- add options ---------
-                                closeAfterAdd: {str(self.__formonly).lower()},
-                                bottominfo:"* required",
-                                viewPagerButtons:true,
-                                afterComplete: function (response, postdata, formid) {{  // auto reload
-                                    var $self = $(this);
-                                    setTimeout(function () {{
-                                        $self.trigger("reloadGrid");
-                                    }}, 50);
-                                }},
-                                 beforeShowForm: function(frm) {{$(this).resetSelection();}}
-                            }},
-                        """ + "\n"
-
-            toolbar += """ 
-                            {   // --------- del options ---------
-                                reloadAfterSubmit:false,
-                                jqModal:false,
-                                bottominfo:"* required",
-                                closeOnEscape:true
-                            },
-                            {
-                                // --------- view options ---------
-                                navkeys: [false,38,40],
-                                height:250,
-                                jqModal:false,
-                                resize:true,
-                                closeOnEscape:true
-                            },
-                            {
-                                // search options
-                                closeOnEscape:true
-                            } 
-                         );""" + "\n"
-                                  
-        elif self.__edit_mode == 'NONE':
+        if self.__edit_mode == 'NONE':
             exp_type = 'true' if self.export_type is not None else 'false'
 
             toolbar += 'jQuery("#' + self.__jq_gridName + '").jqGrid("navGrid", ' + self.__jq_pagerName + ","
@@ -1026,15 +835,5 @@ class PythonGrid():
     # set edit url (edit.py)
     def set_jq_editurl(self, url):
         self.__jq_editurl = url # ABS_PATH .'/'. $url .'?dt='. $this->jq_datatype .'&gn='.$this->jq_gridName;
-
-        return self
-    
-    # enable edit mode. only supported in form edit mode currently
-    def enable_edit(self, edit_mode='CELL', option='CRUD', edit_file='edit'):
-        self.__edit_file = edit_file
-        self.set_jq_editurl(app.config['ABS_PATH'] + edit_file + '?dt=' + self.__jq_datatype + '&gn=' + self.__jq_gridName)
-
-        self.__edit_mode = edit_mode
-        self.__edit_options = option
 
         return self
