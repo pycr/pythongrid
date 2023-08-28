@@ -15,10 +15,9 @@ class PythonGrid():
     has_rating = False
     
     def __init__(self, sql, sql_key=[], sql_table='', db_connection=[]):
-
         self.__jq_gridName = 'list1' if sql_table == '' else sql_table.replace('.', '_')
         self.__sql = sql
-        self.__sql_key = sql_table if isinstance(sql_key, list) else [sql_key]
+        self.__sql_key = sql_key if isinstance(sql_key, list) else [sql_key]
         self.__sql_table = sql_table
         self.__jq_pagerName = '"#' + self.__jq_gridName + '_pager1"'  # Notice the double quote
         self.__jq_caption = sql_table + '&nbsp'
