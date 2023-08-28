@@ -13,9 +13,9 @@ class PythonGridDbExport():
 
         self.__gridName     = request.args['gn'] if 'gn' in request.args.keys() else sys.exit('PYTHONGRID_ERROR: ULR parameter "gn" is not defined.')
         self.__export_type  = request.args['export_type'] if 'export_type' in request.args.keys() else None
-        self.__grid_sql     = sql
+        self.__grid_sql        = session[app.config["GRID_SESSION_KEY"] + "_" + self.__gridName + "_sql"]
+        self.__sql_key         = json.loads(session[app.config["GRID_SESSION_KEY"] + "_" + self.__gridName + "_sql_key"])
         self.__sql_filter   = '' #TODO  set_query_filter()
-        self.__sql_fkey	    = '' #TODO  session->get(SESSION_KEY.'_'.gridName.'_sql_fkey');
 
         self.__rs = None # grid header
         self.__result = None # grid body
