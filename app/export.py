@@ -9,7 +9,7 @@ from collections import OrderedDict
 
 class PythonGridDbExport():
     
-    def __init__(self, sql):
+    def __init__(self):
 
         self.__gridName     = request.args['gn'] if 'gn' in request.args.keys() else sys.exit('PYTHONGRID_ERROR: ULR parameter "gn" is not defined.')
         self.__export_type  = request.args['export_type'] if 'export_type' in request.args.keys() else None
@@ -157,7 +157,7 @@ class PythonGridDbExport():
 
         # ****************** prepare the final query ***********************
         # Store GROUP BY Position 
-        groupBy_Position = sql.upper().find("GROUP BY")
+        groupBy_Position = self.__grid_sql.upper().find("GROUP BY")
 
         if self.__sql_filter != '' and searchOn :
             SQL = self.__grid_sql + ' WHERE ' + self.__sql_filter + ' AND (' + sqlWhere + ')' + sqlOrderBy

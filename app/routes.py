@@ -25,10 +25,10 @@ def index():
 
 @app.route('/data', methods=['GET', 'POST'])
 def data():
-    data = PythonGridDbData('SELECT * FROM orders')
+    data = PythonGridDbData()
     return data.getData()
 
 @app.route('/export', methods=['GET', 'POST'])
 def export():
-    exp = PythonGridDbExport('SELECT * FROM orders')
+    exp = PythonGridDbExport()
     return exp.export()

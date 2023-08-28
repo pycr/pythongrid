@@ -10,7 +10,7 @@ from collections import OrderedDict
 
 class PythonGridDbData():
 
-    def __init__(self, sql):
+    def __init__(self):
 
         self.__gridName        = request.args['gn'] if 'gn' in request.args.keys() else sys.exit('PYTHONGRID_ERROR: ULR parameter "gn" is not defined.')
         self.__data_type       = request.args['dt'] if 'dt' in request.args.keys() else 'json'
@@ -91,7 +91,10 @@ class PythonGridDbData():
                 for i in range(0, len(rules)):
                     filter = operation[rules[i]['op']]
 
-                    # surround date fields with quotes for SQL date comparison
+                    # surround date fields with quotes for SQL 
+                    # 
+                    # 
+                    # date comparison
                     field_index = self.__field_names.index(rules[i]['field'])
                     fm_type = self.__field_types[field_index]
                     
@@ -148,7 +151,7 @@ class PythonGridDbData():
 
         # ****************** prepare the final query ***********************
         # Store GROUP BY Position 
-        groupBy_Position = sql.upper().find("GROUP BY")
+        groupBy_Position = self.__grid_sql.upper().find("GROUP BY")
 
         if self.__sql_filter != '' and searchOn :
             SQL = self.__grid_sql + ' WHERE ' + self.__sql_filter + ' AND (' + sqlWhere + ')' + sqlOrderBy
