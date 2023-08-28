@@ -205,9 +205,9 @@ class PythonGridDbData():
         rowsdict         = OrderedDict() # dictionary of row plus id 
         row              = []
         i = 0
-        for id, rs in enumerate(self.__rs):
+        for rs in self.__rs:
 
-            rowsdict['id'] = id  #TODO - not a real sql key value
+            rowsdict['id'] = self.gen_rowids(rs, self.__sql_key)
             
             j = 0
 
@@ -227,4 +227,18 @@ class PythonGridDbData():
 
         # should return the format like this 
         # #'{"page":' + str(self.__page) + ',"total":' + str(self.__total_pages) + ',"records":' + str(self.__count) + ',"rows":[{"id":"1002","cell":["1002","Diane","Murphy"]},{"id":"1056","cell":["1056","Mary","Patterson"]},{"id":"1076","cell":["1076","Jeff","Firrelli"]},{"id":"1088","cell":["1088","William","Patterson"]},{"id":"1102","cell":["1102","Gerard","Bondur"]},{"id":"1165","cell":["1165","Leslie","Jennings"]},{"id":"1166","cell":["1166","Leslie","Thompson"]},{"id":"1188","cell":["1188","Julie","Firrelli"]},{"id":"1216","cell":["1216","Steve","Patterson"]},{"id":"1286","cell":["1286","Foon Yue","Tseng"]},{"id":"1323","cell":["1323","George","Vanauf"]},{"id":"1337","cell":["1337","Loui","Bondur"]},{"id":"1370","cell":["1370","Gerard","Hernandez"]},{"id":"1401","cell":["1401","Pamela","Castillo"]},{"id":"1501","cell":["1501","Larry","Bott"]},{"id":"1504","cell":["1504","Barry","Jones"]},{"id":"1611","cell":["1611","Andy","Fixter"]},{"id":"1612","cell":["1612","Peter","Marsh"]},{"id":"1619","cell":["1619","Tom","King"]},{"id":"1621","cell":["1621","Mami","Nishi"]},{"id":"1625","cell":["1625","Yoshimi","Kato"]},{"id":"1702","cell":["1702","Martin","Gerard"]}]}'
-        return json.dumps(data, default=str)
+        return json.dumps(data, default=str) 
+    
+
+    # generate grid rowid from single or composite PK
+    def gen_rowids(self, arr=[], keys=[]):
+        rowids = ''
+
+        if isinstance(keys, list):
+            for key, val in enumerate(keys):
+                val = val.replace('`', '')
+                rowids += str(arr[val]) + app.config['PK_DELIMITER']
+        
+        rowids = rowids[:-(len(app.config['PK_DELIMITER']))] # remove last delimiter
+
+        return rowids
