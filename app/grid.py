@@ -836,4 +836,11 @@ class PythonGrid():
     def set_jq_editurl(self, url):
         self.__jq_editurl = url # ABS_PATH .'/'. $url .'?dt='. $this->jq_datatype .'&gn='.$this->jq_gridName;
 
+    # Desc: sel multiselect
+    # Note when positioned to right, it could pose a problem in conditional formatting.
+    def set_multiselect(self, multiselect, multipage=True, position='left'):
+        self.__jq_multiselect = multiselect
+        self.__jq_multipage = multipage
+        self.__jq_multiselectPosition = position
+
         return self
