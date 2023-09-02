@@ -20,7 +20,6 @@ def index():
     grid.set_col_align('status', 'center')
     grid.set_col_width('comments', 600)
     grid.enable_export()
-    grid.enable_edit('FORM')
 
     return render_template('grid.html', title='demo', grid=grid)
 
