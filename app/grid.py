@@ -161,6 +161,7 @@ class PythonGrid():
         self.__img_baseUrl = ''           # image base URL to image column. Only a SINGLE image base url is supported in a datagrid
         self.__grid_methods = []          # array. jqGrid methods
         self.__edit_file = 'edit.py'             # used in jq_editurl. Set by enable_edit 3rd parameter. default to 'edit.php'
+        self.__edit_file = 'edit.py'             # used in jq_editurl. Set by enable_edit 3rd parameter. default to 'edit.py'
 
         # ------ form only --------
         self.__formonly = False              # form only flag
