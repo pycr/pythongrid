@@ -534,11 +534,11 @@ class PythonGrid():
     def display_toolbar(self):
         toolbar = ''
 
-        if self.__edit_mode == 'NONE':
-            exp_type = 'true' if self.export_type is not None else 'false'
+        # if self.__edit_mode == 'NONE':
+        exp_type = 'true' if self.export_type is not None else 'false'
 
-            toolbar += 'jQuery("#' + self.__jq_gridName + '").jqGrid("navGrid", ' + self.__jq_pagerName + ","
-            toolbar += '{edit:false,add:false,del:false,view:false,search:false,excel:' + exp_type +'}, {});' + "\n"
+        toolbar += 'jQuery("#' + self.__jq_gridName + '").jqGrid("navGrid", ' + self.__jq_pagerName + ","
+        toolbar += '{edit:false,add:false,del:false,view:false,search:false,excel:' + exp_type +'}, {});' + "\n"
 
         # resizable grid (beta - jQuery UI)
         if self.__jqu_resize['is_resizable']:
@@ -556,21 +556,6 @@ class PythonGrid():
 
             toolbar += 'jQuery("#' + self.__jq_gridName + '").jqGrid("filterToolbar", {searchOnEnter: false, stringResult: true, defaultSearch: "cn"}); ' + "\n"
             toolbar += 'pg_' + self.__jq_gridName + '[0].toggleToolbar();' + "\n"   # hide inline search by default
-
-        # advanced search
-        if self.__advanced_search:
-            icon_set = 'fa-search-plus' if self.__iconSet == 'fontAwesome' else 'ui-icon-search'
-
-            toolbar += f"jQuery('#{self.__jq_gridName}') \n \
-                .navGrid('{self.__jq_pagerName}',{{edit:false,add:false,del:false,search:false,refresh:false}}) \n \
-                .navButtonAdd({self.__jq_pagerName},{{ \n \
-                    caption:'', \n \
-                    buttonicon:'{icon_set}', \n \
-                    onClickButton: function(){{ \n \
-                        jQuery('#{self.__jq_gridName}').jqGrid('searchGrid', {{multipleSearch:true}}) \n \
-                }}, \n \
-                position:'first' \n \
-            }});\n"
 
         # Excel export
         if self.export_type is not None:
@@ -668,12 +653,19 @@ class PythonGrid():
         #disp += display_masterdetail();
         disp += self.display_properties_end()
         #disp += display_extended_properties();
-        disp += self.display_toolbar()
-        disp += self.display_before_script_end();
-        disp += self.display_script_end();
 
-        disp += self.__display_container();
+        
+        try:
+            from app.core import PythonGridCore
+        except ImportError:
+            disp += self.display_toolbar()
+        else:
+            disp += PythonGridCore().display_toolbar(self)
 
+        
+        disp += self.display_before_script_end()
+        disp += self.display_script_end()
+        disp += self.__display_container()
         disp += self.display_events()
         
         return disp
@@ -837,6 +829,8 @@ class PythonGrid():
     def set_jq_editurl(self, url):
         self.__jq_editurl = url # ABS_PATH .'/'. $url .'?dt='. $this->jq_datatype .'&gn='.$this->jq_gridName;
 
+        return self
+    
     # ------ private variables getters ------
     def get_edit_mode(self):
         return self.__edit_mode
