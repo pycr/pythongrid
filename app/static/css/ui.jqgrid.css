@@ -207,7 +207,7 @@
 	padding: 0 2px 0 2px;
 }
 .ui-jqgrid .ui-jqgrid-htable th.jqgh_cbox {
-	padding: 0;
+	padding: 3px !important;
 }
 .ui-jqgrid .ui-jqgrid-htable .ui-jqgrid-labels th div {
 	overflow: hidden;
@@ -1268,7 +1268,7 @@ a.clearsearchclass {
 }
 .ui-jqgrid.ui-jqgrid-bootstrap tr.jqgfirstrow > td.td_cbox,
 .ui-jqgrid.ui-jqgrid-bootstrap tr.jqgrow > td.td_cbox {
-	padding: 0;
+	padding: 0 !important;
 }
 .ui-jqgrid.ui-jqgrid-bootstrap .jqgrow > td > .cbox {
 	height: 18px;
