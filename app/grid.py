@@ -660,7 +660,7 @@ class PythonGrid():
 
         
         try:
-            from app.core import PythonGridCore
+            from modules.core import PythonGridCore
         except ImportError:
             disp += self.display_toolbar()
         else:
