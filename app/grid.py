@@ -404,8 +404,12 @@ class PythonGrid():
                 cols['align'] = self.__col_aligns[col_name]['align']
 
 
-            if self.__edit_mode == 'CELL':
+            if self.__edit_mode == 'CELL' or self.__edit_mode == 'INLINE':
                 cols['editable'] = False if col_name in self.__col_readonly else True
+            elif self.__edit_mode == 'FORM':
+                cols['editable'] = True
+            else:
+                cols['editable'] = False
 
             # --------------- editoptions ----------------
             # set default text input width, the default edit type is text
