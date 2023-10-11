@@ -651,7 +651,13 @@ class PythonGrid():
         disp += self.display_style()
         disp += self.display_script_begin()
         disp += self.display_properties_begin()
-        disp += self.display_properties_main()
+
+        try:
+            from modules.core import PythonGridCore
+        except ImportError:
+            disp += self.display_properties_main()
+        else:
+            disp += PythonGridCore().display_properties_main(self)
         
         #disp += display_subgrid($subgrid_count);
         #disp += display_masterdetail();
@@ -835,7 +841,27 @@ class PythonGrid():
 
         return self
     
-    # ------ private variables getters ------
+    # enable edit mode. only supported in form edit mode currently
+    def enable_edit(self, edit_mode='CELL', option='CRUD', edit_file='modules/edit'):
+        self.__edit_file = edit_file
+        self.set_jq_editurl(app.config['ABS_PATH'] + edit_file + '?dt=' + self.__jq_datatype + '&gn=' + self.__jq_gridName)
+
+        self.__edit_mode = edit_mode
+        self.__edit_options = option
+
+        return self
+    
+    # Desc: sel multiselect
+    # Note when positioned to right, it could pose a problem in conditional formatting.
+    def set_multiselect(self, multiselect, multipage=True, position='left'):
+        self.__jq_multiselect = multiselect
+        self.__jq_multipage = multipage
+        self.__jq_multiselectPosition = position
+
+        return self
+    
+    # getters
+    # ---------------------------------------------
     def get_edit_mode(self):
         return self.__edit_mode
     
@@ -856,15 +882,160 @@ class PythonGrid():
     
     def get_has_tbarsearch(self):
         return self.__has_tbarsearch
+
+    def get_jq_datatype(self):
+        return self.__jq_datatype
     
+    def get_jq_mtype(self):
+        return self.__jq_mtype
+    
+    def get_jq_url(self):
+        return self.__jq_url
+    
+    def get_jq_colNames(self):
+        return self.__jq_colNames
+
+    def get_jq_pagerName(self):
+        return self.__jq_pagerName
+    
+    def get_jq_rowNum(self):
+        return self.__jq_rowNum
+    
+    def get_jq_rowList(self):
+        return self.__jq_rowList
+    
+    def get_jq_sortname(self):
+        return self.__jq_sortname
+    
+    def get_jq_sortorder(self):
+        return self.__jq_sortorder
+    
+    def get_jq_viewrecords(self):
+        return self.__jq_viewrecords
+    
+    def get_jq_pgtext(self):
+        return self.__jq_pgtext
+    
+    def get_jq_multiselect(self):
+        return self.__jq_multiselect
+    
+    def get_jq_multipage(self):
+        return self.__jq_multipage
+    
+    def get_jq_multiselectPosition(self):
+        return self.__jq_multiselectPosition
+    
+    def get_jq_caption(self):
+        return self.__jq_caption
+    
+    def get_jq_altRows(self):
+        return self.__jq_altRows
+    
+    def get_jq_scrollOffset(self):
+        return self.__jq_scrollOffset
+    
+    def get_jq_rownumbers(self):
+        return self.__jq_rownumbers
+    
+    def get_jq_shrinkToFit(self):
+        return self.__jq_shrinkToFit
+    
+    def get_jq_autowidth(self):
+        return self.__jq_autowidth
+    
+    def get_jq_hiddengrid(self):
+        return self.__jq_hiddengrid
+    
+    def get_jq_scroll(self):
+        return self.__jq_scroll
+    
+    def get_jq_height(self):
+        return self.__jq_height
+    
+    def get_jq_autoresizeOnLoad(self):
+        return self.__jq_autoresizeOnLoad
+    
+    def get_jq_gridview(self):
+        return self.__jq_gridview
+    
+    def get_jq_editurl(self):
+        return self.__jq_editurl
+    
+    def get_jq_width(self):
+        return self.__jq_width
+    
+    def get_jq_direction(self):
+        return self.__jq_direction
+    
+    def get_jq_grouping(self):
+        return self.__jq_grouping
+    
+    def get_jq_group_name(self):
+        return self.__jq_group_name
+    
+    def get_jq_is_group_summary(self):
+        return self.__jq_is_group_summary
+    
+    def get_jq_showSummaryOnHide(self):
+        return self.__jq_showSummaryOnHide
+    
+    def get_jq_group_summary_show(self):
+        return self.__jq_group_summary_show
+    
+    def get_jq_groupcollapse(self):
+        return self.__jq_groupcollapse
+
+    def get_col_autocomplete(self):
+        return self.__col_autocomplete
+    
+    def get_col_wysiwyg(self):
+        return self.__col_wysiwyg
+
     def get_advanced_search(self):
         return self.__advanced_search
-    # -----------------------------------------
-    # Desc: sel multiselect
-    # Note when positioned to right, it could pose a problem in conditional formatting.
-    def set_multiselect(self, multiselect, multipage=True, position='left'):
-        self.__jq_multiselect = multiselect
-        self.__jq_multipage = multipage
-        self.__jq_multiselectPosition = position
 
-        return self
+    def get_cust_grid_properties(self):
+        return self.__cust_grid_properties
+
+    def get_theme_name(self):
+        return self.__theme_name
+    
+    def get_export_type(self):
+        return self.__export_type
+    
+    def get_export_url(self):
+        return self.__export_url
+    
+    def get_sql_key(self):
+        return self.__sql_key
+    
+    def get_grid_sql(self):
+        return self.__grid_sql
+    
+    def get_field_names(self):
+        return self.__field_names
+    
+    def get_field_types(self):
+        return self.__field_types
+    
+    def get_gridName(self):
+        return self.__gridName
+    
+    def get_kb_nav(self):
+        return self.__kb_nav
+    
+    def get_form_width(self):
+        return self.__form_width
+    
+    def get_form_height(self):
+        return self.__form_height
+    
+    def get_col_frozen(self):
+        return self.__col_frozen
+    # -----------------------------------------
+
+    # setters
+    # -----------------------------------------
+    def set_script_editEvtHandler(self, scriptEditEvtHandler):
+        self.__script_editEvtHandler = scriptEditEvtHandler
+    # -----------------------------------------
