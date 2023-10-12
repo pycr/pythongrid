@@ -195,3 +195,19 @@ The pythonGrid supports
 * CSV export
 
 **[Run Demo](https://demo.pythongrid.com/)**
+
+## Troubleshoot
+
+1. [Flask Debugger Toolbar](https://flask-debugtoolbar.readthedocs.io/) is enabled by default in demo. Disable it by commenting the following in app/__init__.py
+
+```python
+toolbar = DebugToolbarExtension(app)
+```
+
+2.  When launching application, you might get a server error
+
+> Internal Server Error 
+>
+> The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+
+This is due to Flask session caching. Simply refresh the browser should fix the issue. 
